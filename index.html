@@ -128,6 +128,15 @@
   .arriba{position:fixed;right:calc(14px + var(--safe-r));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-size:18px;z-index:60;box-shadow:0 4px 14px rgba(0,0,0,.4)}
   footer{color:var(--muted);font-size:11px;padding:26px 0 10px;text-align:center;line-height:1.5}
 
+
+  /* aviso: abrir desde el celular */
+  .bloqueo{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;text-align:center}
+  .bloqueo-box{max-width:460px}
+  .bloqueo h2{font-family:Fraunces,serif;font-size:26px;margin:6px 0 10px}
+  .bloqueo p{color:var(--muted);line-height:1.5;margin:8px 0}
+  .bloqueo-url{font-family:"JetBrains Mono",monospace;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0 16px;color:var(--sun);font-size:15px;word-break:break-all}
+  .bloqueo-btn{display:inline-block;margin-top:18px;background:var(--accent);color:#0d0f12;font-weight:700;border-radius:10px;padding:12px 18px}
+
   /* ===== tablets y pantallas más grandes ===== */
   @media (min-width:700px){
     .wrap{max-width:900px;margin:0 auto}
@@ -148,42 +157,43 @@ window.addEventListener("error",function(e){document.getElementById("root").inne
 
 <script>
 if("undefined"==typeof React||"undefined"==typeof ReactDOM)document.getElementById("root").innerHTML='<div style="padding:30px;color:#ffb3b3;font-family:sans-serif">No se pudo cargar React desde cdn.jsdelivr.net. Revisá tu conexión o un bloqueador de anuncios.</div>';else{
-const e="https://small-waterfall-6097.fedetrade.workers.dev",t=6e5,a=12e4,{useState:c,useEffect:l,useMemo:n,useCallback:r}=React,s={politica:"#6cb4ee",economia:"#3ecf8e",dolar:"#9ad86b",
-mercados:"#b48cf2",crypto:"#f7931a",energia:"#e0a458",geopolitica:"#4fd1c5",conflictos:"#ff5c5c",portadas:"#e9e6df"},i=(e,t=2)=>null==e||isNaN(e)?"—":Number(e).toLocaleString("es-AR",{
-minimumFractionDigits:t,maximumFractionDigits:t}),o=e=>null==e||isNaN(e)?"—":`${e>=0?"▲":"▼"} ${Math.abs(e).toFixed(2)}%`,m=e=>null==e?"":e>=0?"up":"down";function timeAgo(e){if(!e)return""
-;const t=Math.floor((Date.now()-e)/1e3);if(t<60)return"recién";const a=Math.floor(t/60);if(a<60)return`hace ${a} min`;const c=Math.floor(a/60);return c<24?`hace ${c} h`:`hace ${Math.floor(c/24)} d`}
-async function getJSON(t){const a=await fetch(e+t);if(!a.ok)throw new Error(`${a.status} en ${t}`);return a.json()}function Spark({data:e,up:t}){if(!e||e.length<2)return null
+const e="https://small-waterfall-6097.fedetrade.workers.dev",t="https://small-waterfall-6097.fedetrade.workers.dev/",a=6e5,c=12e4,{useState:l,useEffect:n,useMemo:r,useCallback:s}=React,i={
+politica:"#6cb4ee",economia:"#3ecf8e",dolar:"#9ad86b",mercados:"#b48cf2",crypto:"#f7931a",energia:"#e0a458",geopolitica:"#4fd1c5",conflictos:"#ff5c5c",portadas:"#e9e6df"
+},o=(e,t=2)=>null==e||isNaN(e)?"—":Number(e).toLocaleString("es-AR",{minimumFractionDigits:t,maximumFractionDigits:t
+}),m=e=>null==e||isNaN(e)?"—":`${e>=0?"▲":"▼"} ${Math.abs(e).toFixed(2)}%`,d=e=>null==e?"":e>=0?"up":"down";function timeAgo(e){if(!e)return"";const t=Math.floor((Date.now()-e)/1e3)
+;if(t<60)return"recién";const a=Math.floor(t/60);if(a<60)return`hace ${a} min`;const c=Math.floor(a/60);return c<24?`hace ${c} h`:`hace ${Math.floor(c/24)} d`}async function getJSON(t){
+const a=await fetch(e+t);if(!a.ok)throw new Error(`${a.status} en ${t}`);return a.json()}function Spark({data:e,up:t}){if(!e||e.length<2)return null
 ;const a=Math.min(...e),c=Math.max(...e)-a||1,l=e.map((t,l)=>`${l/(e.length-1)*160},${34-(t-a)/c*34}`).join(" ");return React.createElement("svg",{className:"spark",width:"100%",height:34,
 viewBox:"0 0 160 34",preserveAspectRatio:"none"},React.createElement("polyline",{fill:"none",stroke:t?"var(--up)":"var(--down)",strokeWidth:"1.6",points:l}))}function Ticker({m:e}){
 if(!e)return React.createElement("div",{className:"ticker"},React.createElement("div",{className:"ticker-track",style:{animation:"none",paddingLeft:20}},"Cargando mercados…"))
-;const t=[],a=e.foco?.blue,c=e.foco?.ccl,l=e.foco?.reservas;a&&t.push(["BLUE",`$${i(a.venta,0)}`,a.changeDay]),c&&t.push(["CCL",`$${i(c.venta,0)}`,c.changeDay]),
-l&&t.push(["RESERVAS",`US$${i(l.value,0)} M`]),e.riesgoPais&&t.push(["RIESGO PAÍS",`${i(e.riesgoPais.value,0)} pb`]),
-[...e.indices,...e.commodities,...e.adrs].forEach(e=>t.push([e.name.toUpperCase(),i(e.price),e.change])),e.crypto.forEach(e=>t.push([e.symbol,`US$${i(e.usd,e.usd<10?3:0)}`,e.change24h]))
-;const n=t.map(([e,t,a],c)=>React.createElement("span",{className:"tk",key:c},React.createElement("b",null,e),t," ",null!=a&&React.createElement("span",{className:m(a)},o(a))))
+;const t=[],a=e.foco?.blue,c=e.foco?.ccl,l=e.foco?.reservas;a&&t.push(["BLUE",`$${o(a.venta,0)}`,a.changeDay]),c&&t.push(["CCL",`$${o(c.venta,0)}`,c.changeDay]),
+l&&t.push(["RESERVAS",`US$${o(l.value,0)} M`]),e.riesgoPais&&t.push(["RIESGO PAÍS",`${o(e.riesgoPais.value,0)} pb`]),
+[...e.indices,...e.commodities,...e.adrs].forEach(e=>t.push([e.name.toUpperCase(),o(e.price),e.change])),e.crypto.forEach(e=>t.push([e.symbol,`US$${o(e.usd,e.usd<10?3:0)}`,e.change24h]))
+;const n=t.map(([e,t,a],c)=>React.createElement("span",{className:"tk",key:c},React.createElement("b",null,e),t," ",null!=a&&React.createElement("span",{className:d(a)},m(a))))
 ;return React.createElement("div",{className:"ticker"},React.createElement("div",{className:"ticker-track"},n,n))}function Markets({m:e,err:t}){if(t)return React.createElement("div",{className:"err"
 },"No se pudieron cargar los mercados: ",t);if(!e)return React.createElement("div",{className:"grid g-dolar"},Array.from({length:6}).map((e,t)=>React.createElement("div",{className:"skel",key:t})))
 ;const a=e.foco||{},c=({t:e,v:t,ch:a})=>React.createElement("div",{className:"card hl"},React.createElement("div",{className:"lbl"},e),React.createElement("div",{className:"val"
-},t),React.createElement("div",{className:m(a?.n),style:{fontSize:14,fontFamily:"JetBrains Mono",marginTop:4}},a?.txt??"—")),l=a.reservas
+},t),React.createElement("div",{className:d(a?.n),style:{fontSize:14,fontFamily:"JetBrains Mono",marginTop:4}},a?.txt??"—")),l=a.reservas
 ;return React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Dólar y reservas"),React.createElement("div",{className:"grid g-mkt"},React.createElement(c,{
-t:"Dólar blue",v:a.blue?"$"+i(a.blue.venta,0):"—",ch:a.blue&&{n:a.blue.changeDay,txt:o(a.blue.changeDay)}}),React.createElement(c,{t:"Dólar CCL",v:a.ccl?"$"+i(a.ccl.venta,0):"—",ch:a.ccl&&{
-n:a.ccl.changeDay,txt:o(a.ccl.changeDay)}}),React.createElement(c,{t:"Reservas BCRA",v:l?`US$ ${i(l.value,0)} M`:"—",ch:l&&{n:l.changeDay,txt:(n=l.changeDay,
-null==n?"—":`${n>=0?"+":"−"}US$ ${i(Math.abs(n),0)} M`)}}),React.createElement(c,{t:"Riesgo país",v:e.riesgoPais?i(e.riesgoPais.value,0)+" pb":"—",ch:e.riesgoPais&&{
-n:null==e.riesgoPais.change?null:-e.riesgoPais.change,txt:o(e.riesgoPais.change)}}),a.elecciones&&React.createElement("div",{className:"card hl full"},React.createElement("div",{className:"lbl"
+t:"Dólar blue",v:a.blue?"$"+o(a.blue.venta,0):"—",ch:a.blue&&{n:a.blue.changeDay,txt:m(a.blue.changeDay)}}),React.createElement(c,{t:"Dólar CCL",v:a.ccl?"$"+o(a.ccl.venta,0):"—",ch:a.ccl&&{
+n:a.ccl.changeDay,txt:m(a.ccl.changeDay)}}),React.createElement(c,{t:"Reservas BCRA",v:l?`US$ ${o(l.value,0)} M`:"—",ch:l&&{n:l.changeDay,txt:(n=l.changeDay,
+null==n?"—":`${n>=0?"+":"−"}US$ ${o(Math.abs(n),0)} M`)}}),React.createElement(c,{t:"Riesgo país",v:e.riesgoPais?o(e.riesgoPais.value,0)+" pb":"—",ch:e.riesgoPais&&{
+n:null==e.riesgoPais.change?null:-e.riesgoPais.change,txt:m(e.riesgoPais.change)}}),a.elecciones&&React.createElement("div",{className:"card hl full"},React.createElement("div",{className:"lbl"
 },"Elecciones 2027"),[["Oficialismo",a.elecciones.oficialismo],["Opositor",a.elecciones.oposicion]].map(([e,t])=>t&&React.createElement("div",{key:e,style:{marginTop:8}},React.createElement("div",{
 className:"sub",style:{marginTop:0}},e),React.createElement("div",{className:"row"},React.createElement("span",{style:{fontWeight:600}},t.name),React.createElement("span",{className:"val",style:{
 fontSize:20,marginTop:0}},Math.round(100*t.p),"%")))))),React.createElement("h2",{className:"section-title"},"Bolsas, petróleo y commodities"),React.createElement("div",{className:"grid g-mkt"
 },[...e.indices,...e.commodities].map(e=>React.createElement("div",{className:"card",key:e.symbol},React.createElement("div",{className:"lbl"},e.name),React.createElement("div",{className:"val"
-},i(e.price)),React.createElement("div",{className:m(e.change),style:{fontSize:14,fontFamily:"JetBrains Mono",marginTop:4}},o(e.change))))),React.createElement("div",{className:"grid",style:{
+},o(e.price)),React.createElement("div",{className:d(e.change),style:{fontSize:14,fontFamily:"JetBrains Mono",marginTop:4}},m(e.change))))),React.createElement("div",{className:"grid",style:{
 marginTop:8}},React.createElement("div",{className:"card"},React.createElement("div",{className:"lbl",style:{marginBottom:6}},"ADRs argentinos (NYSE · USD)"),React.createElement("div",{
 className:"mini-list"},e.adrs.map(e=>React.createElement("div",{className:"item",key:e.symbol},React.createElement("span",null,e.name," ",React.createElement("span",{style:{color:"var(--muted)"}
-},e.symbol)),React.createElement("span",null,i(e.price)," ",React.createElement("span",{className:m(e.change)},o(e.change))))))),React.createElement("div",{className:"card"
+},e.symbol)),React.createElement("span",null,o(e.price)," ",React.createElement("span",{className:d(e.change)},m(e.change))))))),React.createElement("div",{className:"card"
 },React.createElement("div",{className:"lbl",style:{marginBottom:6}},"Crypto (24 h)"),React.createElement("div",{className:"mini-list"},e.crypto.map(e=>React.createElement("div",{className:"item",
-key:e.id},React.createElement("span",null,e.symbol),React.createElement("span",null,"US$",i(e.usd,e.usd<10?3:0)," · $",i(e.ars,0)," ",React.createElement("span",{className:m(e.change24h)
-},o(e.change24h)))))))));var n}function Src({it:e,cats:t}){return React.createElement("div",{className:"src"},React.createElement("span",{className:"s"
+key:e.id},React.createElement("span",null,e.symbol),React.createElement("span",null,"US$",o(e.usd,e.usd<10?3:0)," · $",o(e.ars,0)," ",React.createElement("span",{className:d(e.change24h)
+},m(e.change24h)))))))));var n}function Src({it:e,cats:t}){return React.createElement("div",{className:"src"},React.createElement("span",{className:"s"
 },e.source),React.createElement("span",null,"·"),React.createElement("span",null,timeAgo(e.ts)),e.categories?.filter(e=>"portadas"!==e).slice(0,1).map(e=>React.createElement("span",{key:e,
-className:"badge",style:{color:s[e],borderColor:s[e]+"55"}},t?.[e]||e)))}function Img({src:e}){const[t,a]=c(!0);return e&&t?React.createElement("img",{src:e,loading:"lazy",
-referrerPolicy:"no-referrer",onError:()=>a(!1),alt:""}):null}function Highlights({items:e,cats:t}){const[a,l]=c(0),n=React.useRef(null);if(!e?.length)return null
-;const r=e.slice(0,4),s=a<r.length?a:0,i=r[s],o=r.map((e,t)=>[e,t]).filter(([,e])=>e!==s),m=e=>{l(e);const t=n.current;try{t&&t.scrollIntoView&&t.getBoundingClientRect().top<40&&t.scrollIntoView({
+className:"badge",style:{color:i[e],borderColor:i[e]+"55"}},t?.[e]||e)))}function Img({src:e}){const[t,a]=l(!0);return e&&t?React.createElement("img",{src:e,loading:"lazy",
+referrerPolicy:"no-referrer",onError:()=>a(!1),alt:""}):null}function Highlights({items:e,cats:t}){const[a,c]=l(0),n=React.useRef(null);if(!e?.length)return null
+;const r=e.slice(0,4),s=a<r.length?a:0,i=r[s],o=r.map((e,t)=>[e,t]).filter(([,e])=>e!==s),m=e=>{c(e);const t=n.current;try{t&&t.scrollIntoView&&t.getBoundingClientRect().top<40&&t.scrollIntoView({
 behavior:"smooth",block:"start"})}catch(e){}};return React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Lo más importante"),React.createElement("div",{
 className:"lead"},React.createElement("a",{className:"hero",ref:n,href:i.link,target:"_blank",rel:"noopener",title:"Abrir la nota"},React.createElement(Img,{key:i.link,src:i.image
 }),React.createElement("div",{className:"body"},React.createElement(Src,{it:i,cats:t}),React.createElement("h2",null,i.title),i.summary&&React.createElement("p",{style:{color:"var(--muted)"}
@@ -196,28 +206,28 @@ src:e.image}),React.createElement("div",{className:"body"},React.createElement(S
 function Clima({c:e}){return e?.ciudades?.length?React.createElement("div",{className:"clima scroll-x"},e.ciudades.map(e=>React.createElement("div",{className:"dia",key:e.ciudad,
 title:`${e.desc} · ST ${Math.round(e.st)}° · Hum ${e.hum}% · Viento ${Math.round(e.viento)} km/h`},React.createElement("b",null,e.ciudad),React.createElement("div",null,React.createElement("span",{
 style:{fontSize:20}},e.icon)," ",React.createElement("span",{className:"t"},Math.round(e.temp),"°")),React.createElement("div",{className:"d"
-},Math.round(e.max),"° / ",Math.round(e.min),"°",e.lluvia>=30&&React.createElement("span",{style:{color:"var(--accent)"}}," · 💧",e.lluvia,"%"))))):null}const d=e=>{const t=new Date(e);return{
+},Math.round(e.max),"° / ",Math.round(e.min),"°",e.lluvia>=30&&React.createElement("span",{style:{color:"var(--accent)"}}," · 💧",e.lluvia,"%"))))):null}const u=e=>{const t=new Date(e);return{
 dia:t.toLocaleDateString("es-AR",{weekday:"short",day:"numeric",timeZone:"America/Argentina/Buenos_Aires"}),hora:t.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hourCycle:"h23",
-timeZone:"America/Argentina/Buenos_Aires"})}};function DepFila({x:e,golf:t}){const a=d(e.fecha);return React.createElement("div",{className:"dep-row"},React.createElement("div",{className:"dep-when"
+timeZone:"America/Argentina/Buenos_Aires"})}};function DepFila({x:e,golf:t}){const a=u(e.fecha);return React.createElement("div",{className:"dep-row"},React.createElement("div",{className:"dep-when"
 },a.dia,React.createElement("br",null),t?e.hasta?"al "+new Date(e.hasta).toLocaleDateString("es-AR",{day:"numeric",month:"short"}):"":a.hora),React.createElement("div",null,React.createElement("div",{
 style:{fontWeight:600}},e.partido),React.createElement("div",{className:"dep-tor"},e.torneo,e.lugar?" · "+e.lugar:""),"in"===e.estado&&React.createElement("div",{className:"live"
-},"● EN VIVO",e.marcador?" · "+e.marcador:"")))}function DepCol({t:e,items:t,golf:a}){const[l,n]=c(!1),r=t||[];if(!r.length)return null;const s=l?r:r.slice(0,2),i=r.length-2
+},"● EN VIVO",e.marcador?" · "+e.marcador:"")))}function DepCol({t:e,items:t,golf:a}){const[c,n]=l(!1),r=t||[];if(!r.length)return null;const s=c?r:r.slice(0,2),i=r.length-2
 ;return React.createElement("div",{className:"card"},React.createElement("div",{className:"lbl",style:{marginBottom:4}},e),s.map((e,t)=>React.createElement(DepFila,{key:t,x:e,golf:a
-})),i>0&&React.createElement("button",{className:"dep-more",onClick:()=>n(!l)},l?"Ver menos ▴":`Ver ${i} más ▾`))}function Deportes({d:e}){
+})),i>0&&React.createElement("button",{className:"dep-more",onClick:()=>n(!c)},c?"Ver menos ▴":`Ver ${i} más ▾`))}function Deportes({d:e}){
 return e&&[e.futbol,e.tenis,e.golf,e.polo].some(e=>e?.length)?React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
 },"Deportes · próximos partidos"),React.createElement("div",{className:"dep-grid"},React.createElement(DepCol,{t:"⚽ Fútbol",items:e.futbol}),React.createElement(DepCol,{t:"🎾 Tenis",items:e.tenis
 }),React.createElement(DepCol,{t:"⛳ Golf",items:e.golf,golf:!0}),React.createElement(DepCol,{t:"🏇 Polo",items:e.polo}))):null}function Feriados({f:e}){if(!e||!Array.isArray(e.lista))return null
 ;return React.createElement("div",{className:"feriados"},e.lista.length?e.lista.map((e,t)=>{return React.createElement("div",{key:t,className:"fer-row"},React.createElement("span",{className:"fer-dia"
 },(a=e.fecha,new Date(a+"T12:00:00").toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"numeric"}))),React.createElement("span",null,e.tipo," · ",e.nombre),React.createElement("span",{
 className:"fer-amb"+("Nacional"!==e.ambito?" solo":"")},e.ambito));var a}):React.createElement("div",{className:"d"},"📅 Sin feriados, asuetos ni días inhábiles en los próximos ",e.dias," días"))}
-function App(){const[e,i]=c(null),[o,m]=c(null),[d,u]=c(null),[R,E]=c(null),[p,h]=c(null),[g,v]=c(null),[f,N]=c(null),[y,b]=c(null),[k,D]=c(!1);l(()=>{const e=()=>D(window.scrollY>700)
-;return window.addEventListener("scroll",e,{passive:!0}),()=>window.removeEventListener("scroll",e)},[]);const[w,C]=c("todas"),[S,A]=c(""),$=r(()=>getJSON("/api/news").then(e=>{i(e),m(null)
-}).catch(e=>m(e.message)),[]),M=r(()=>getJSON("/api/markets").then(e=>{u(e),E(null)}).catch(e=>E(e.message)),[]);l(()=>{$(),M(),getJSON("/api/briefing?v=3").then(h).catch(()=>{})
-;const e=()=>getJSON("/api/clima").then(v).catch(()=>{});e();const c=setInterval(e,9e5),l=()=>getJSON("/api/deportes").then(N).catch(()=>{});l();const n=setInterval(l,18e5)
-;getJSON("/api/feriados").then(b).catch(()=>{});const r=setInterval($,t),s=setInterval(M,a);return()=>{clearInterval(r),clearInterval(s),clearInterval(c),clearInterval(n)}},[])
-;const x=e?.categories||{},F=n(()=>{if(!e)return[];let t;if("todas"===w){const a=new Set;t=[],Object.values(e.byCategory).flat().forEach(e=>{a.has(e.link)||(a.add(e.link),t.push(e))}),
-t.sort((e,t)=>(t.ts||0)-(e.ts||0))}else t=e.byCategory[w]||[];if(S.trim()){const e=S.toLowerCase();t=t.filter(t=>(t.title+" "+t.summary+" "+t.source).toLowerCase().includes(e))}return t.slice(0,120)
-},[e,w,S]),T=(new Date).toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"});return React.createElement(React.Fragment,null,React.createElement(Ticker,{m:d
+function App(){const[e,t]=l(null),[o,m]=l(null),[d,u]=l(null),[R,E]=l(null),[p,h]=l(null),[g,v]=l(null),[f,N]=l(null),[y,b]=l(null),[k,w]=l(!1);n(()=>{const e=()=>w(window.scrollY>700)
+;return window.addEventListener("scroll",e,{passive:!0}),()=>window.removeEventListener("scroll",e)},[]);const[D,C]=l("todas"),[S,A]=l(""),M=s(()=>getJSON("/api/news").then(e=>{t(e),m(null)
+}).catch(e=>m(e.message)),[]),$=s(()=>getJSON("/api/markets").then(e=>{u(e),E(null)}).catch(e=>E(e.message)),[]);n(()=>{M(),$(),getJSON("/api/briefing?v=3").then(h).catch(()=>{})
+;const e=()=>getJSON("/api/clima").then(v).catch(()=>{});e();const t=setInterval(e,9e5),l=()=>getJSON("/api/deportes").then(N).catch(()=>{});l();const n=setInterval(l,18e5)
+;getJSON("/api/feriados").then(b).catch(()=>{});const r=setInterval(M,a),s=setInterval($,c);return()=>{clearInterval(r),clearInterval(s),clearInterval(t),clearInterval(n)}},[])
+;const x=e?.categories||{},I=r(()=>{if(!e)return[];let t;if("todas"===D){const a=new Set;t=[],Object.values(e.byCategory).flat().forEach(e=>{a.has(e.link)||(a.add(e.link),t.push(e))}),
+t.sort((e,t)=>(t.ts||0)-(e.ts||0))}else t=e.byCategory[D]||[];if(S.trim()){const e=S.toLowerCase();t=t.filter(t=>(t.title+" "+t.summary+" "+t.source).toLowerCase().includes(e))}return t.slice(0,120)
+},[e,D,S]),T=(new Date).toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"});return React.createElement(React.Fragment,null,React.createElement(Ticker,{m:d
 }),React.createElement("div",{className:"wrap"},React.createElement("header",{className:"mast"},React.createElement("div",{className:"mast-top"},React.createElement("div",{className:"brand"
 },"Argentina",React.createElement("span",null,"Daily"),React.createElement("i",null,".")),React.createElement("div",{className:"meta"},React.createElement("div",{style:{textTransform:"capitalize"}
 },T),React.createElement("div",null,e?`act. ${new Date(e.updated).toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hourCycle:"h23"})}`:"Cargando…"))),React.createElement("div",{
@@ -226,12 +236,20 @@ className:"mast-sub"},React.createElement(Clima,{c:g}),React.createElement(Feria
 key:t,style:{height:220}}))),e&&React.createElement(Highlights,{items:e.highlights,cats:x}),p?.text&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
 },"Resumen del día"),React.createElement("div",{className:"brief"},p.text)),React.createElement(Markets,{m:d,err:R}),React.createElement(Deportes,{d:f
 }),e&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Todas las noticias"),React.createElement("div",{className:"toolbar"},React.createElement("div",{
-className:"tabs scroll-x"},React.createElement("button",{className:"tab"+("todas"===w?" on":""),onClick:()=>C("todas")},"Todas"),Object.entries(x).map(([t,a])=>React.createElement("button",{key:t,
-className:"tab"+(w===t?" on":""),onClick:()=>C(t)},React.createElement("span",{style:{color:w===t?"#111":s[t]}},"●")," ",a," ",React.createElement("span",{style:{opacity:.6}
+className:"tabs scroll-x"},React.createElement("button",{className:"tab"+("todas"===D?" on":""),onClick:()=>C("todas")},"Todas"),Object.entries(x).map(([t,a])=>React.createElement("button",{key:t,
+className:"tab"+(D===t?" on":""),onClick:()=>C(t)},React.createElement("span",{style:{color:D===t?"#111":i[t]}},"●")," ",a," ",React.createElement("span",{style:{opacity:.6}
 },"(",e.byCategory[t]?.length||0,")")))),React.createElement("input",{className:"search",placeholder:"Buscar: Milei, YPF, Fed, Irán…",value:S,onChange:e=>A(e.target.value)
-})),React.createElement(NewsGrid,{items:F,cats:x})),k&&React.createElement("button",{className:"arriba","aria-label":"Volver arriba",onClick:()=>window.scrollTo({top:0,behavior:"smooth"})
+})),React.createElement(NewsGrid,{items:I,cats:x})),k&&React.createElement("button",{className:"arriba","aria-label":"Volver arriba",onClick:()=>window.scrollTo({top:0,behavior:"smooth"})
 },"↑"),React.createElement("footer",null,"Noticias: La Nación · Clarín · Ámbito · El Cronista · BBC Mundo · DW · France 24 · El País · CriptoNoticias. Mercados: DolarAPI · ArgentinaDatos · BCRA · Polymarket · CoinGecko/Kraken · Yahoo Finance. Clima: Open-Meteo. Deportes: ESPN. Feriados: ArgentinaDatos.",React.createElement("br",null),"Datos informativos, pueden tener demora. No es asesoramiento financiero.")))
-}ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App,null))}
+}function esCelular(){const e=navigator.userAgent||"";if(/iPad|Tablet/i.test(e))return!1;if(/iPhone|iPod|Android.+Mobile|Windows Phone/i.test(e))return!0
+;const t=window.matchMedia&&window.matchMedia("(pointer: coarse)").matches,a=Math.min(window.screen.width,window.screen.height);return t&&a<600}function SoloCelular(){
+const e=location.href.split("#")[0];return React.createElement("div",{className:"bloqueo"},React.createElement("div",{className:"bloqueo-box"},React.createElement("div",{className:"brand",style:{
+fontSize:34}},"Argentina",React.createElement("span",null,"Daily"),React.createElement("i",null,".")),React.createElement("div",{style:{fontSize:46,margin:"18px 0 6px"}
+},"📱"),React.createElement("h2",null,"Esta versión es para celular"),React.createElement("p",null,"Abrila desde el navegador de tu celular en:"),React.createElement("div",{className:"bloqueo-url"
+},e.replace(/^https?:\/\//,"")),React.createElement("p",{style:{fontSize:13}
+},"Desde el celular la podés instalar como app: en Android, menú ⋮ → ",React.createElement("b",null,"Instalar app"),"; en iPhone, Compartir → ",React.createElement("b",null,"Agregar a inicio"),"."),React.createElement("a",{
+className:"bloqueo-btn",href:t},"Ir a la versión para computadora →")))}
+ReactDOM.createRoot(document.getElementById("root")).render(esCelular()?React.createElement(App,null):React.createElement(SoloCelular,null))}
 </script>
 <script>
 if ("serviceWorker" in navigator) { window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); }); }

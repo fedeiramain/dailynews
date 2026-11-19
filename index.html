@@ -172,21 +172,23 @@ if(!e)return React.createElement("div",{className:"ticker"},React.createElement(
 ;const r=t.map(([e,t,a,c],n)=>React.createElement("span",{className:"tk",key:n},React.createElement("b",null,e),t," ",null!=a&&React.createElement("span",{className:d(c?-a:a)},m(a))))
 ;return React.createElement("div",{className:"ticker"},React.createElement("div",{className:"ticker-track"},r,r))}function Markets({m:e,err:t,indec:a}){if(t)return React.createElement("div",{
 className:"err"},"No se pudieron cargar los mercados: ",t);if(!e)return React.createElement("div",{className:"grid g-dolar"},Array.from({length:6}).map((e,t)=>React.createElement("div",{
-className:"skel",key:t})));const c=e.foco||{},n=({t:e,v:t,ch:a,extra:c})=>React.createElement("div",{className:"card hl"},React.createElement("div",{className:"lbl"},e),React.createElement("div",{
-className:"val"},t),React.createElement("div",{className:d(a?.n),style:{fontSize:14,fontFamily:"JetBrains Mono",marginTop:4}},a?.txt??"—"),c),l=c.reservas
+className:"skel",key:t})));const c=e.foco||{},n=({t:e,v:t,ch:a,extra:c,anio:n})=>React.createElement("div",{className:"card hl"},React.createElement("div",{className:"lbl"
+},e),React.createElement("div",{className:"val"},t),React.createElement("div",{className:d(a?.n),style:{fontSize:14,fontFamily:"JetBrains Mono",marginTop:4}
+},a?.txt??"—"),null!=n&&React.createElement("div",{style:{fontSize:13,marginTop:8,paddingTop:6,borderTop:"1px solid var(--line)"}},React.createElement("span",{style:{color:"var(--muted)"}
+},"En el año "),React.createElement("span",{className:d(-n),style:{fontFamily:"JetBrains Mono",fontWeight:600}},m(n))),c),l=c.reservas
 ;return React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Dólar y reservas"),React.createElement("div",{className:"grid g-mkt"},React.createElement(n,{
-t:"Dólar blue",v:c.blue?"$"+s(c.blue.venta,0):"—",ch:c.blue&&{n:null==c.blue.changeDay?null:-c.blue.changeDay,txt:m(c.blue.changeDay)}}),React.createElement(n,{t:"Dólar CCL",
-v:c.ccl?"$"+s(c.ccl.venta,0):"—",ch:c.ccl&&{n:null==c.ccl.changeDay?null:-c.ccl.changeDay,txt:m(c.ccl.changeDay)}}),React.createElement(n,{t:"USDT Binance",v:c.usdt?"$"+s(c.usdt.precio,0):"—",
-ch:c.usdt&&{n:null==c.usdt.change?null:-c.usdt.change,txt:null==c.usdt.change?"P2P":m(c.usdt.change)}}),React.createElement(n,{t:"Reservas BCRA",v:l?`US$ ${s(l.value,0)} M`:"—",ch:l&&{n:l.changeDay,
-txt:(r=l.changeDay,null==r?"—":`${r>=0?"+":"−"}US$ ${s(Math.abs(r),0)} M`)}}),React.createElement(n,{t:"Riesgo país",v:e.riesgoPais?s(e.riesgoPais.value,0)+" pb":"—",ch:e.riesgoPais&&{
-n:null==e.riesgoPais.change?null:-e.riesgoPais.change,txt:m(e.riesgoPais.change)},extra:e.riesgoPais?.hoy&&React.createElement("div",{style:{fontSize:13,fontWeight:600,marginTop:8,paddingTop:6,
-borderTop:"1px solid var(--line)",color:"alcista"===e.riesgoPais.hoy?"var(--down)":"var(--up)"}},"Hoy: ","alcista"===e.riesgoPais.hoy?"↗":"↘"," ",e.riesgoPais.hoy)
-}),c.elecciones&&React.createElement("div",{className:"card hl full"},React.createElement("div",{className:"lbl"
-},"Elecciones 2027"),[["Oficialismo",c.elecciones.oficialismo],["Opositor",c.elecciones.oposicion]].map(([e,t])=>t&&React.createElement("div",{key:e,style:{marginTop:8}},React.createElement("div",{
-className:"sub",style:{marginTop:0}},e),React.createElement("div",{className:"row"},React.createElement("span",{style:{fontWeight:600}},t.name),React.createElement("span",{className:"val",style:{
-fontSize:20,marginTop:0}},Math.round(100*t.p),"%")))))),React.createElement(Indec,{d:a}),React.createElement("h2",{className:"section-title"
-},"Bolsas, petróleo y commodities"),React.createElement("div",{className:"grid g-mkt"},[...e.indices,...e.commodities].map(e=>React.createElement("div",{className:"card",key:e.symbol
-},React.createElement("div",{className:"lbl"},e.name),React.createElement("div",{className:"val"},s(e.price)),React.createElement("div",{className:d(e.change),style:{fontSize:14,
+t:"Dólar blue",v:c.blue?"$"+s(c.blue.venta,0):"—",ch:c.blue&&{n:null==c.blue.changeDay?null:-c.blue.changeDay,txt:m(c.blue.changeDay)},anio:c.blue?.changeYear}),React.createElement(n,{t:"Dólar CCL",
+v:c.ccl?"$"+s(c.ccl.venta,0):"—",ch:c.ccl&&{n:null==c.ccl.changeDay?null:-c.ccl.changeDay,txt:m(c.ccl.changeDay)},anio:c.ccl?.changeYear}),React.createElement(n,{t:"USDT Binance",
+v:c.usdt?"$"+s(c.usdt.precio,0):"—",ch:c.usdt&&{n:null==c.usdt.change?null:-c.usdt.change,txt:null==c.usdt.change?"P2P":m(c.usdt.change)}}),React.createElement(n,{t:"Reservas BCRA",
+v:l?`US$ ${s(l.value,0)} M`:"—",ch:l&&{n:l.changeDay,txt:(r=l.changeDay,null==r?"—":`${r>=0?"+":"−"}US$ ${s(Math.abs(r),0)} M`)}}),React.createElement(n,{t:"Riesgo país",
+v:e.riesgoPais?s(e.riesgoPais.value,0)+" pb":"—",ch:e.riesgoPais&&{n:null==e.riesgoPais.change?null:-e.riesgoPais.change,txt:m(e.riesgoPais.change)},
+extra:e.riesgoPais?.hoy&&React.createElement("div",{style:{fontSize:13,fontWeight:600,marginTop:8,paddingTop:6,borderTop:"1px solid var(--line)",
+color:"alcista"===e.riesgoPais.hoy?"var(--down)":"var(--up)"}},"Hoy: ","alcista"===e.riesgoPais.hoy?"↗":"↘"," ",e.riesgoPais.hoy)}),c.elecciones&&React.createElement("div",{className:"card hl full"
+},React.createElement("div",{className:"lbl"},"Elecciones 2027"),[["Oficialismo",c.elecciones.oficialismo],["Opositor",c.elecciones.oposicion]].map(([e,t])=>t&&React.createElement("div",{key:e,style:{
+marginTop:8}},React.createElement("div",{className:"sub",style:{marginTop:0}},e),React.createElement("div",{className:"row"},React.createElement("span",{style:{fontWeight:600}
+},t.name),React.createElement("span",{className:"val",style:{fontSize:20,marginTop:0}},Math.round(100*t.p),"%")))))),React.createElement(Indec,{d:a}),React.createElement("h2",{
+className:"section-title"},"Bolsas, petróleo y commodities"),React.createElement("div",{className:"grid g-mkt"},[...e.indices,...e.commodities].map(e=>React.createElement("div",{className:"card",
+key:e.symbol},React.createElement("div",{className:"lbl"},e.name),React.createElement("div",{className:"val"},s(e.price)),React.createElement("div",{className:d(e.change),style:{fontSize:14,
 fontFamily:"JetBrains Mono",marginTop:4}},m(e.change))))),React.createElement("div",{className:"grid",style:{marginTop:8}},React.createElement("div",{className:"card"},React.createElement("div",{
 className:"lbl",style:{marginBottom:6}},"ADRs argentinos (NYSE · USD)"),React.createElement("div",{className:"mini-list"},e.adrs.map(e=>React.createElement("div",{className:"item",key:e.symbol
 },React.createElement("span",null,e.name," ",React.createElement("span",{style:{color:"var(--muted)"}},e.symbol)),React.createElement("span",null,s(e.price)," ",React.createElement("span",{
@@ -237,26 +239,26 @@ t:"Inflación",v:s(e.inflacion.mensual,1)+"%",sub:"Interanual "+(null==e.inflaci
 }),React.createElement(c,{t:"Desempleo",v:s(e.desempleo.valor,1)+"%",malo:!0,var12:{v:e.desempleo.variacion12m,txt:(null==e.desempleo.variacion12m?"":t(e.desempleo.variacion12m))+" en 12 meses"},
 tend:e.desempleo.tendencia}),React.createElement(c,{t:"Pobreza",v:s(e.pobreza.valor,1)+"%",malo:!0,var12:{v:e.pobreza.variacion12m,
 txt:(null==e.pobreza.variacion12m?"":t(e.pobreza.variacion12m))+" en 12 meses"},tend:e.pobreza.tendencia})));var n}function App(){
-const[e,t]=n(null),[s,m]=n(null),[d,u]=n(null),[p,g]=n(null),[v,R]=n(null),[E,h]=n(null),[f,y]=n(null),[b,N]=n(null),[w,D]=n(null),[k,C]=n(!1);l(()=>{const e=()=>C(window.scrollY>700)
-;return window.addEventListener("scroll",e,{passive:!0}),()=>window.removeEventListener("scroll",e)},[]);const[S,A]=n("todas"),[x,I]=n(""),P=i(()=>getJSON("/api/news").then(e=>{t(e),m(null)
-}).catch(e=>m(e.message)),[]),T=i(()=>getJSON("/api/markets").then(e=>{u(e),g(null)}).catch(e=>g(e.message)),[]);l(()=>{P(),T(),getJSON("/api/briefing?v=3").then(R).catch(()=>{})
+const[e,t]=n(null),[s,m]=n(null),[d,u]=n(null),[p,g]=n(null),[v,R]=n(null),[E,h]=n(null),[f,y]=n(null),[b,N]=n(null),[w,D]=n(null),[k,S]=n(!1);l(()=>{const e=()=>S(window.scrollY>700)
+;return window.addEventListener("scroll",e,{passive:!0}),()=>window.removeEventListener("scroll",e)},[]);const[C,A]=n("todas"),[x,I]=n(""),T=i(()=>getJSON("/api/news").then(e=>{t(e),m(null)
+}).catch(e=>m(e.message)),[]),P=i(()=>getJSON("/api/markets").then(e=>{u(e),g(null)}).catch(e=>g(e.message)),[]);l(()=>{T(),P(),getJSON("/api/briefing?v=3").then(R).catch(()=>{})
 ;const e=()=>getJSON("/api/clima").then(h).catch(()=>{});e();const t=setInterval(e,9e5),n=()=>getJSON("/api/deportes").then(y).catch(()=>{});n();const l=setInterval(n,18e5)
-;getJSON("/api/feriados").then(N).catch(()=>{}),getJSON("/api/indec").then(D).catch(()=>{});const r=setInterval(P,a),i=setInterval(T,c);return()=>{clearInterval(r),clearInterval(i),clearInterval(t),
-clearInterval(l)}},[]);const $=e?.categories||{},M=r(()=>{if(!e)return[];let t;if("todas"===S){const a=new Set;t=[],Object.values(e.byCategory).flat().forEach(e=>{a.has(e.link)||(a.add(e.link),
-t.push(e))}),t.sort((e,t)=>(t.ts||0)-(e.ts||0))}else t=e.byCategory[S]||[];if(x.trim()){const e=x.toLowerCase();t=t.filter(t=>(t.title+" "+t.summary+" "+t.source).toLowerCase().includes(e))}
-return t.slice(0,120)},[e,S,x]),z=(new Date).toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"});return React.createElement(React.Fragment,null,React.createElement(Ticker,{m:d
+;getJSON("/api/feriados").then(N).catch(()=>{}),getJSON("/api/indec").then(D).catch(()=>{});const r=setInterval(T,a),i=setInterval(P,c);return()=>{clearInterval(r),clearInterval(i),clearInterval(t),
+clearInterval(l)}},[]);const M=e?.categories||{},$=r(()=>{if(!e)return[];let t;if("todas"===C){const a=new Set;t=[],Object.values(e.byCategory).flat().forEach(e=>{a.has(e.link)||(a.add(e.link),
+t.push(e))}),t.sort((e,t)=>(t.ts||0)-(e.ts||0))}else t=e.byCategory[C]||[];if(x.trim()){const e=x.toLowerCase();t=t.filter(t=>(t.title+" "+t.summary+" "+t.source).toLowerCase().includes(e))}
+return t.slice(0,120)},[e,C,x]),z=(new Date).toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"});return React.createElement(React.Fragment,null,React.createElement(Ticker,{m:d
 }),React.createElement("div",{className:"wrap"},React.createElement("header",{className:"mast"},React.createElement("div",{className:"mast-top"},React.createElement("div",{className:"brand"
 },"Argentina",React.createElement("span",null,"Daily"),React.createElement("i",null,".")),React.createElement("div",{className:"meta"},React.createElement("div",{style:{textTransform:"capitalize"}
 },z),React.createElement("div",null,e?`act. ${new Date(e.updated).toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hourCycle:"h23"})}`:"Cargando…"))),React.createElement("div",{
 className:"mast-sub"},React.createElement(Clima,{c:E}),React.createElement(Feriados,{f:b}))),s&&React.createElement("div",{className:"err",style:{marginTop:24}
 },"No se pudieron cargar las noticias: ",s),!e&&!s&&React.createElement("div",{className:"news",style:{marginTop:24}},Array.from({length:3}).map((e,t)=>React.createElement("div",{className:"skel",
-key:t,style:{height:220}}))),e&&React.createElement(Highlights,{items:e.highlights,cats:$}),v?.text&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
+key:t,style:{height:220}}))),e&&React.createElement(Highlights,{items:e.highlights,cats:M}),v?.text&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
 },"Resumen del día"),React.createElement("div",{className:"brief"},v.text)),React.createElement(Markets,{m:d,err:p,indec:w}),React.createElement(Deportes,{d:f
 }),e&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Todas las noticias"),React.createElement("div",{className:"toolbar"},React.createElement("div",{
-className:"tabs scroll-x"},React.createElement("button",{className:"tab"+("todas"===S?" on":""),onClick:()=>A("todas")
-},"Todas"),Object.entries($).filter(([e])=>"congreso"!==e&&"legislatura"!==e).map(([t,a])=>React.createElement("button",{key:t,className:"tab"+(S===t?" on":""),onClick:()=>A(t)
-},React.createElement("span",{style:{color:S===t?"#111":o[t]}},"●")," ",a," ",React.createElement("span",{style:{opacity:.6}},"(",e.byCategory[t]?.length||0,")")))),React.createElement("input",{
-className:"search",placeholder:"Buscar: Milei, YPF, Fed, Irán…",value:x,onChange:e=>I(e.target.value)})),React.createElement(NewsGrid,{items:M,cats:$})),k&&React.createElement("button",{
+className:"tabs scroll-x"},React.createElement("button",{className:"tab"+("todas"===C?" on":""),onClick:()=>A("todas")
+},"Todas"),Object.entries(M).filter(([e])=>"congreso"!==e&&"legislatura"!==e).map(([t,a])=>React.createElement("button",{key:t,className:"tab"+(C===t?" on":""),onClick:()=>A(t)
+},React.createElement("span",{style:{color:C===t?"#111":o[t]}},"●")," ",a," ",React.createElement("span",{style:{opacity:.6}},"(",e.byCategory[t]?.length||0,")")))),React.createElement("input",{
+className:"search",placeholder:"Buscar: Milei, YPF, Fed, Irán…",value:x,onChange:e=>I(e.target.value)})),React.createElement(NewsGrid,{items:$,cats:M})),k&&React.createElement("button",{
 className:"arriba","aria-label":"Volver arriba",onClick:()=>window.scrollTo({top:0,behavior:"smooth"})
 },"↑"),React.createElement("footer",null,"Noticias: La Nación · Clarín · Ámbito · El Cronista · BBC Mundo · DW · France 24 · El País · CriptoNoticias. Mercados: DolarAPI · ArgentinaDatos · BCRA · Polymarket · CoinGecko/Kraken · Yahoo Finance. Clima: Open-Meteo. Deportes: ESPN. Feriados: ArgentinaDatos. INDEC: ArgentinaDatos · datos.gob.ar · informes del INDEC.",React.createElement("br",null),"Datos informativos, pueden tener demora. No es asesoramiento financiero.")))
 }const p={get:e=>{try{return localStorage.getItem(e)}catch(e){return null}},set:(e,t)=>{try{localStorage.setItem(e,t)}catch(e){}},del:e=>{try{localStorage.removeItem(e)}catch(e){}}

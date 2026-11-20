@@ -157,49 +157,58 @@ window.addEventListener("error",function(e){document.getElementById("root").inne
 
 <script>
 if("undefined"==typeof React||"undefined"==typeof ReactDOM)document.getElementById("root").innerHTML='<div style="padding:30px;color:#ffb3b3;font-family:sans-serif">No se pudo cargar React desde cdn.jsdelivr.net. Revisá tu conexión o un bloqueador de anuncios.</div>';else{
-const e="https://small-waterfall-6097.fedetrade.workers.dev",t="https://small-waterfall-6097.fedetrade.workers.dev/",a=6e5,c=12e4,{useState:n,useEffect:l,useMemo:r,useCallback:i}=React,o={
+const e="https://small-waterfall-6097.fedetrade.workers.dev",t="https://small-waterfall-6097.fedetrade.workers.dev/",a=6e5,n=12e4,{useState:c,useEffect:l,useMemo:r,useCallback:i}=React,o={
 politica:"#6cb4ee",economia:"#3ecf8e",dolar:"#9ad86b",mercados:"#b48cf2",crypto:"#f7931a",energia:"#e0a458",geopolitica:"#4fd1c5",conflictos:"#ff5c5c",impuestos:"#f78fb3",congreso:"#7fb8ff",
 legislatura:"#ffb86b",parlamento:"#7fb8ff",portadas:"#e9e6df"},s=(e,t=2)=>null==e||isNaN(e)?"—":Number(e).toLocaleString("es-AR",{minimumFractionDigits:t,maximumFractionDigits:t
 }),m=e=>null==e||isNaN(e)?"—":`${e>=0?"▲":"▼"} ${Math.abs(e).toFixed(2)}%`,d=e=>null==e?"":e>=0?"up":"down";function timeAgo(e){if(!e)return"";const t=Math.floor((Date.now()-e)/1e3)
-;if(t<60)return"recién";const a=Math.floor(t/60);if(a<60)return`hace ${a} min`;const c=Math.floor(a/60);return c<24?`hace ${c} h`:`hace ${Math.floor(c/24)} d`}async function getJSON(t){
+;if(t<60)return"recién";const a=Math.floor(t/60);if(a<60)return`hace ${a} min`;const n=Math.floor(a/60);return n<24?`hace ${n} h`:`hace ${Math.floor(n/24)} d`}async function getJSON(t){
 const a=await fetch(e+t,{cache:"no-cache"});if(!a.ok)throw new Error(`${a.status} en ${t}`);return a.json()}function Spark({data:e,up:t}){if(!e||e.length<2)return null
-;const a=Math.min(...e),c=Math.max(...e)-a||1,n=e.map((t,n)=>`${n/(e.length-1)*160},${34-(t-a)/c*34}`).join(" ");return React.createElement("svg",{className:"spark",width:"100%",height:34,
-viewBox:"0 0 160 34",preserveAspectRatio:"none"},React.createElement("polyline",{fill:"none",stroke:t?"var(--up)":"var(--down)",strokeWidth:"1.6",points:n}))}function Ticker({m:e}){
+;const a=Math.min(...e),n=Math.max(...e)-a||1,c=e.map((t,c)=>`${c/(e.length-1)*160},${34-(t-a)/n*34}`).join(" ");return React.createElement("svg",{className:"spark",width:"100%",height:34,
+viewBox:"0 0 160 34",preserveAspectRatio:"none"},React.createElement("polyline",{fill:"none",stroke:t?"var(--up)":"var(--down)",strokeWidth:"1.6",points:c}))}function Ticker({m:e}){
 if(!e)return React.createElement("div",{className:"ticker"},React.createElement("div",{className:"ticker-track",style:{animation:"none",paddingLeft:20}},"Cargando mercados…"))
-;const t=[],a=e.foco?.blue,c=e.foco?.ccl,n=e.foco?.reservas;a&&t.push(["BLUE",`$${s(a.venta,0)}`,a.changeDay,!0]),c&&t.push(["CCL",`$${s(c.venta,0)}`,c.changeDay,!0]);const l=e.foco?.usdt
-;l&&t.push(["USDT BINANCE",`$${s(l.precio,0)}`,l.change,!0]),n&&t.push(["RESERVAS",`US$${s(n.value,0)} M`]),e.riesgoPais&&t.push(["RIESGO PAÍS",`${s(e.riesgoPais.value,0)} pb`]),
+;const t=[],a=e.foco?.blue,n=e.foco?.ccl,c=e.foco?.reservas;a&&t.push(["BLUE",`$${s(a.venta,0)}`,a.changeDay,!0]),n&&t.push(["CCL",`$${s(n.venta,0)}`,n.changeDay,!0]);const l=e.foco?.usdt
+;l&&t.push(["USDT BINANCE",`$${s(l.precio,0)}`,l.change,!0]),c&&t.push(["RESERVAS",`US$${s(c.value,0)} M`]),e.riesgoPais&&t.push(["RIESGO PAÍS",`${s(e.riesgoPais.value,0)} pb`]),
 [...e.indices,...e.commodities,...e.adrs].forEach(e=>t.push([e.name.toUpperCase(),s(e.price),e.change])),e.crypto.forEach(e=>t.push([e.symbol,`US$${s(e.usd,e.usd<10?3:0)}`,e.change24h]))
-;const r=t.map(([e,t,a,c],n)=>React.createElement("span",{className:"tk",key:n},React.createElement("b",null,e),t," ",null!=a&&React.createElement("span",{className:d(c?-a:a)},m(a))))
-;return React.createElement("div",{className:"ticker"},React.createElement("div",{className:"ticker-track"},r,r))}function Markets({m:e,err:t,indec:a}){if(t)return React.createElement("div",{
+;const r=t.map(([e,t,a,n],c)=>React.createElement("span",{className:"tk",key:c},React.createElement("b",null,e),t," ",null!=a&&React.createElement("span",{className:d(n?-a:a)},m(a))))
+;return React.createElement("div",{className:"ticker"},React.createElement("div",{className:"ticker-track"},r,r))}function RiesgoExtra({rp:e}){if(!e)return null;const t=e.contexto,a={marginTop:8,
+paddingTop:6,borderTop:"1px solid var(--line)"};return React.createElement(React.Fragment,null,t&&React.createElement("div",{style:{...a,fontSize:13}},React.createElement("div",{style:{fontWeight:600}
+},{internacional:"🌎 Pesó más lo internacional",local:"🇦🇷 Pesó más lo local",estable:"Sin cambios relevantes"}[t.peso]),React.createElement("div",{style:{color:"var(--muted)",fontSize:12,marginTop:2
+}},"Emergentes ",m(t.emergentes),null!=t.tesoro10&&React.createElement(React.Fragment,null," · Tesoro EE.UU. ",s(t.tesoro10,2),"%"))),e.hoy&&React.createElement("div",{style:{...a,fontSize:13,
+fontWeight:600,color:"alcista"===e.hoy?"var(--down)":"var(--up)"}},"Hoy: ","alcista"===e.hoy?"↗":"↘"," ",e.hoy))}function Markets({m:e,err:t,indec:a}){if(t)return React.createElement("div",{
 className:"err"},"No se pudieron cargar los mercados: ",t);if(!e)return React.createElement("div",{className:"grid g-dolar"},Array.from({length:6}).map((e,t)=>React.createElement("div",{
-className:"skel",key:t})));const c=e.foco||{},n=({t:e,v:t,ch:a,extra:c,anio:n})=>React.createElement("div",{className:"card hl"},React.createElement("div",{className:"lbl"
+className:"skel",key:t})));const n=e.foco||{},c=({t:e,v:t,ch:a,extra:n,anio:c})=>React.createElement("div",{className:"card hl"},React.createElement("div",{className:"lbl"
 },e),React.createElement("div",{className:"val"},t),React.createElement("div",{className:d(a?.n),style:{fontSize:14,fontFamily:"JetBrains Mono",marginTop:4}
-},a?.txt??"—"),null!=n&&React.createElement("div",{style:{fontSize:13,marginTop:8,paddingTop:6,borderTop:"1px solid var(--line)"}},React.createElement("span",{style:{color:"var(--muted)"}
-},"En el año "),React.createElement("span",{className:d(-n),style:{fontFamily:"JetBrains Mono",fontWeight:600}},m(n))),c),l=c.reservas
-;return React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Dólar y reservas"),React.createElement("div",{className:"grid g-mkt"},React.createElement(n,{
-t:"Dólar blue",v:c.blue?"$"+s(c.blue.venta,0):"—",ch:c.blue&&{n:null==c.blue.changeDay?null:-c.blue.changeDay,txt:m(c.blue.changeDay)},anio:c.blue?.changeYear}),React.createElement(n,{t:"Dólar CCL",
-v:c.ccl?"$"+s(c.ccl.venta,0):"—",ch:c.ccl&&{n:null==c.ccl.changeDay?null:-c.ccl.changeDay,txt:m(c.ccl.changeDay)},anio:c.ccl?.changeYear}),React.createElement(n,{t:"USDT Binance",
-v:c.usdt?"$"+s(c.usdt.precio,0):"—",ch:c.usdt&&{n:null==c.usdt.change?null:-c.usdt.change,txt:null==c.usdt.change?"P2P":m(c.usdt.change)}}),React.createElement(n,{t:"Reservas BCRA",
-v:l?`US$ ${s(l.value,0)} M`:"—",ch:l&&{n:l.changeDay,txt:(r=l.changeDay,null==r?"—":`${r>=0?"+":"−"}US$ ${s(Math.abs(r),0)} M`)}}),React.createElement(n,{t:"Riesgo país",
-v:e.riesgoPais?s(e.riesgoPais.value,0)+" pb":"—",ch:e.riesgoPais&&{n:null==e.riesgoPais.change?null:-e.riesgoPais.change,txt:m(e.riesgoPais.change)},
-extra:e.riesgoPais?.hoy&&React.createElement("div",{style:{fontSize:13,fontWeight:600,marginTop:8,paddingTop:6,borderTop:"1px solid var(--line)",
-color:"alcista"===e.riesgoPais.hoy?"var(--down)":"var(--up)"}},"Hoy: ","alcista"===e.riesgoPais.hoy?"↗":"↘"," ",e.riesgoPais.hoy)}),c.elecciones&&React.createElement("div",{className:"card hl full"
-},React.createElement("div",{className:"lbl"},"Elecciones 2027"),[["Oficialismo",c.elecciones.oficialismo],["Opositor",c.elecciones.oposicion]].map(([e,t])=>t&&React.createElement("div",{key:e,style:{
-marginTop:8}},React.createElement("div",{className:"sub",style:{marginTop:0}},e),React.createElement("div",{className:"row"},React.createElement("span",{style:{fontWeight:600}
-},t.name),React.createElement("span",{className:"val",style:{fontSize:20,marginTop:0}},Math.round(100*t.p),"%")))))),React.createElement(Indec,{d:a}),React.createElement("h2",{
-className:"section-title"},"Bolsas, petróleo y commodities"),React.createElement("div",{className:"grid g-mkt"},[...e.indices,...e.commodities].map(e=>React.createElement("div",{className:"card",
-key:e.symbol},React.createElement("div",{className:"lbl"},e.name),React.createElement("div",{className:"val"},s(e.price)),React.createElement("div",{className:d(e.change),style:{fontSize:14,
+},a?.txt??"—"),null!=c&&React.createElement("div",{style:{fontSize:13,marginTop:8,paddingTop:6,borderTop:"1px solid var(--line)"}},React.createElement("span",{style:{color:"var(--muted)"}
+},"En el año "),React.createElement("span",{className:d(-c),style:{fontFamily:"JetBrains Mono",fontWeight:600}},m(c))),n),l=n.reservas
+;return React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Dólar y reservas"),React.createElement("div",{className:"grid g-mkt"},React.createElement(c,{
+t:"Dólar blue",v:n.blue?"$"+s(n.blue.venta,0):"—",ch:n.blue&&{n:null==n.blue.changeDay?null:-n.blue.changeDay,txt:m(n.blue.changeDay)},anio:n.blue?.changeYear}),React.createElement(c,{t:"Dólar CCL",
+v:n.ccl?"$"+s(n.ccl.venta,0):"—",ch:n.ccl&&{n:null==n.ccl.changeDay?null:-n.ccl.changeDay,txt:m(n.ccl.changeDay)},anio:n.ccl?.changeYear}),React.createElement(c,{t:"USDT Binance",
+v:n.usdt?"$"+s(n.usdt.precio,0):"—",ch:n.usdt&&{n:null==n.usdt.change?null:-n.usdt.change,txt:null==n.usdt.change?"P2P":m(n.usdt.change)}}),React.createElement(c,{t:"Reservas BCRA",
+v:l?`US$ ${s(l.value,0)} M`:"—",ch:l&&{n:l.changeDay,txt:(r=l.changeDay,null==r?"—":`${r>=0?"+":"−"}US$ ${s(Math.abs(r),0)} M`)}}),React.createElement(c,{t:"Riesgo país",
+v:e.riesgoPais?s(e.riesgoPais.value,0)+" pb":"—",ch:e.riesgoPais&&{n:null==e.riesgoPais.change?null:-e.riesgoPais.change,txt:m(e.riesgoPais.change)},extra:React.createElement(RiesgoExtra,{
+rp:e.riesgoPais})}),n.elecciones&&React.createElement("div",{className:"card hl full"},React.createElement("div",{className:"lbl"
+},"Elecciones 2027"),[["Oficialismo",n.elecciones.oficialismo],["Opositor",n.elecciones.oposicion]].map(([e,t])=>t&&React.createElement("div",{key:e,style:{marginTop:8}},React.createElement("div",{
+className:"sub",style:{marginTop:0}},e),React.createElement("div",{className:"row"},React.createElement("span",{style:{fontWeight:600}},t.name),React.createElement("span",{className:"val",style:{
+fontSize:20,marginTop:0}},Math.round(100*t.p),"%")))))),React.createElement(Indec,{d:a}),React.createElement("h2",{className:"section-title"
+},"Bolsas, petróleo y commodities"),React.createElement("div",{className:"grid g-mkt"},[...e.indices,...e.commodities].map(e=>React.createElement("div",{className:"card",key:e.symbol
+},React.createElement("div",{className:"lbl"},e.name),React.createElement("div",{className:"val"},s(e.price)),React.createElement("div",{className:d(e.change),style:{fontSize:14,
 fontFamily:"JetBrains Mono",marginTop:4}},m(e.change))))),React.createElement("div",{className:"grid",style:{marginTop:8}},React.createElement("div",{className:"card"},React.createElement("div",{
-className:"lbl",style:{marginBottom:6}},"ADRs argentinos (NYSE · USD)"),React.createElement("div",{className:"mini-list"},e.adrs.map(e=>React.createElement("div",{className:"item",key:e.symbol
-},React.createElement("span",null,e.name," ",React.createElement("span",{style:{color:"var(--muted)"}},e.symbol)),React.createElement("span",null,s(e.price)," ",React.createElement("span",{
-className:d(e.change)},m(e.change))))))),React.createElement("div",{className:"card"},React.createElement("div",{className:"lbl",style:{marginBottom:6}},"Crypto (24 h)"),React.createElement("div",{
-className:"mini-list"},e.crypto.map(e=>React.createElement("div",{className:"item",key:e.id
+className:"lbl",style:{marginBottom:6}},"ADRs argentinos (NYSE · USD)"),React.createElement("div",{className:"mini-list"},e.adrs.map(e=>React.createElement("div",{className:"item",key:e.symbol,style:{
+alignItems:"flex-start"}},React.createElement("span",null,e.name," ",React.createElement("span",{style:{color:"var(--muted)"}},e.symbol),e.objetivo&&React.createElement("div",{style:{fontSize:11.5,
+color:"var(--muted)",marginTop:3},title:e.objetivo.analistas?`Promedio de ${e.objetivo.analistas} analistas`:"Promedio de analistas"
+},"Objetivo US$",s(e.objetivo.precio),e.objetivo.tendencia&&React.createElement("span",{
+title:e.objetivo.tendencia.detalle||`Hace ${e.objetivo.tendencia.dias} días era US$${s(e.objetivo.tendencia.antes)}`,style:{marginLeft:4,fontWeight:700,
+color:"alcista"===e.objetivo.tendencia.dir?"var(--up)":"bajista"===e.objetivo.tendencia.dir?"var(--down)":"var(--muted)"}
+},"alcista"===e.objetivo.tendencia.dir?"↗":"bajista"===e.objetivo.tendencia.dir?"↘":"→")," ",React.createElement("span",{className:d(e.objetivo.potencial)
+},e.objetivo.potencial>=0?"+":"",s(e.objetivo.potencial,0),"%"))),React.createElement("span",null,s(e.price)," ",React.createElement("span",{className:d(e.change)
+},m(e.change))))))),React.createElement("div",{className:"card"},React.createElement("div",{className:"lbl",style:{marginBottom:6}},"Crypto (24 h)"),React.createElement("div",{className:"mini-list"
+},e.crypto.map(e=>React.createElement("div",{className:"item",key:e.id
 },React.createElement("span",null,e.symbol),React.createElement("span",null,"US$",s(e.usd,e.usd<10?3:0)," · $",s(e.ars,0)," ",React.createElement("span",{className:d(e.change24h)
 },m(e.change24h)))))))));var r}function Src({it:e,cats:t}){return React.createElement("div",{className:"src"},React.createElement("span",{className:"s"
 },e.source),React.createElement("span",null,"·"),React.createElement("span",null,timeAgo(e.ts)),e.categories?.filter(e=>"portadas"!==e).slice(0,1).map(e=>React.createElement("span",{key:e,
-className:"badge",style:{color:o[e],borderColor:o[e]+"55"}},t?.[e]||e)))}function Img({src:e}){const[t,a]=n(!0);return e&&t?React.createElement("img",{src:e,loading:"lazy",
-referrerPolicy:"no-referrer",onError:()=>a(!1),alt:""}):null}function Highlights({items:e,cats:t}){const[a,c]=n(0),l=React.useRef(null);if(!e?.length)return null
-;const r=e.slice(0,4),i=a<r.length?a:0,o=r[i],s=r.map((e,t)=>[e,t]).filter(([,e])=>e!==i),m=e=>{c(e);const t=l.current;try{t&&t.scrollIntoView&&t.getBoundingClientRect().top<40&&t.scrollIntoView({
+className:"badge",style:{color:o[e],borderColor:o[e]+"55"}},t?.[e]||e)))}function Img({src:e}){const[t,a]=c(!0);return e&&t?React.createElement("img",{src:e,loading:"lazy",
+referrerPolicy:"no-referrer",onError:()=>a(!1),alt:""}):null}function Highlights({items:e,cats:t}){const[a,n]=c(0),l=React.useRef(null);if(!e?.length)return null
+;const r=e.slice(0,4),i=a<r.length?a:0,o=r[i],s=r.map((e,t)=>[e,t]).filter(([,e])=>e!==i),m=e=>{n(e);const t=l.current;try{t&&t.scrollIntoView&&t.getBoundingClientRect().top<40&&t.scrollIntoView({
 behavior:"smooth",block:"start"})}catch(e){}};return React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Lo más importante"),React.createElement("div",{
 className:"lead"},React.createElement("a",{className:"hero",ref:l,href:o.link,target:"_blank",rel:"noopener",title:"Abrir la nota"},React.createElement(Img,{key:o.link,src:o.image
 }),React.createElement("div",{className:"body"},React.createElement(Src,{it:o,cats:t}),React.createElement("h2",null,o.title),o.summary&&React.createElement("p",{style:{color:"var(--muted)"}
@@ -217,62 +226,62 @@ dia:t.toLocaleDateString("es-AR",{weekday:"short",day:"numeric",timeZone:"Americ
 timeZone:"America/Argentina/Buenos_Aires"})}};function DepFila({x:e,golf:t}){const a=u(e.fecha);return React.createElement("div",{className:"dep-row"},React.createElement("div",{className:"dep-when"
 },a.dia,React.createElement("br",null),t?e.hasta?"al "+new Date(e.hasta).toLocaleDateString("es-AR",{day:"numeric",month:"short"}):"":a.hora),React.createElement("div",null,React.createElement("div",{
 style:{fontWeight:600}},e.partido),React.createElement("div",{className:"dep-tor"},e.torneo,e.lugar?" · "+e.lugar:""),"in"===e.estado&&React.createElement("div",{className:"live"
-},"● EN VIVO",e.marcador?" · "+e.marcador:"")))}function DepCol({t:e,items:t,golf:a}){const[c,l]=n(!1),r=t||[];if(!r.length)return null;const i=c?r:r.slice(0,2),o=r.length-2
+},"● EN VIVO",e.marcador?" · "+e.marcador:"")))}function DepCol({t:e,items:t,golf:a}){const[n,l]=c(!1),r=t||[];if(!r.length)return null;const i=n?r:r.slice(0,2),o=r.length-2
 ;return React.createElement("div",{className:"card"},React.createElement("div",{className:"lbl",style:{marginBottom:4}},e),i.map((e,t)=>React.createElement(DepFila,{key:t,x:e,golf:a
-})),o>0&&React.createElement("button",{className:"dep-more",onClick:()=>l(!c)},c?"Ver menos ▴":`Ver ${o} más ▾`))}function Deportes({d:e}){
-return e&&[e.futbol,e.tenis,e.golf,e.polo,e.rugby].some(e=>e?.length)?React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
+})),o>0&&React.createElement("button",{className:"dep-more",onClick:()=>l(!n)},n?"Ver menos ▴":`Ver ${o} más ▾`))}function Deportes({d:e}){
+return e&&[e.futbol,e.tenis,e.golf,e.polo,e.rugby,e.f1].some(e=>e?.length)?React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
 },"Deportes · próximos partidos"),React.createElement("div",{className:"dep-grid"},React.createElement(DepCol,{t:"⚽ Fútbol",items:e.futbol}),React.createElement(DepCol,{t:"🎾 Tenis",items:e.tenis
-}),React.createElement(DepCol,{t:"⛳ Golf",items:e.golf,golf:!0}),React.createElement(DepCol,{t:"🏇 Polo",items:e.polo}),React.createElement(DepCol,{t:"🏉 Rugby",items:e.rugby}))):null}
-function Feriados({f:e}){if(!e||!Array.isArray(e.lista))return null;return React.createElement("div",{className:"feriados"},e.lista.length?e.lista.map((e,t)=>{return React.createElement("div",{key:t,
-className:"fer-row"},React.createElement("span",{className:"fer-dia"},(a=e.fecha,new Date(a+"T12:00:00").toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"numeric"
-}))),React.createElement("span",null,e.tipo," · ",e.nombre),React.createElement("span",{className:"fer-amb"+("Nacional"!==e.ambito?" solo":"")},e.ambito));var a}):React.createElement("div",{
-className:"d"},"📅 Sin feriados, asuetos ni días inhábiles en los próximos ",e.dias," días"))}function Indec({d:e}){if(!e||!e.inflacion)return null
-;const t=e=>(e>0?"+":"")+s(e,1)+" pp",a=({x:e,malo:t,pct:a})=>{if(!e)return null
-;const c="alcista"===e.dir?"↗":"bajista"===e.dir?"↘":"→",n="estable"===e.dir?"var(--muted)":"alcista"===e.dir!=!!t?"var(--up)":"var(--down)";return React.createElement("div",{className:"tend",style:{
-marginTop:6,paddingTop:6,borderTop:"1px solid var(--line)"}},React.createElement("div",{className:"sub",style:{color:n,fontWeight:600}},"Tendencia ",(new Date).getFullYear(),": ",c," ",e.dir))
-},c=({t:e,v:t,sub:c,var12:n,malo:l,per:r,tend:i,pct:o})=>React.createElement("div",{className:"card"},React.createElement("div",{className:"lbl"},e),React.createElement("div",{className:"val"
-},t),null!=n&&null!=n.v&&React.createElement("div",{className:"sub",style:{fontWeight:600,color:0===n.v?void 0:n.v>0!=!!l?"var(--up)":"var(--down)"}
-},n.v>0?"▲ ":n.v<0?"▼ ":"",n.txt),c&&React.createElement("div",{className:"sub"},c),r&&React.createElement("div",{className:"sub",style:{opacity:.75}},r),React.createElement(a,{x:i,malo:l,pct:o}))
-;return React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Datos INDEC"),React.createElement("div",{className:"grid g-mkt"},React.createElement(c,{
+}),React.createElement(DepCol,{t:"⛳ Golf",items:e.golf,golf:!0}),React.createElement(DepCol,{t:"🏇 Polo",items:e.polo}),React.createElement(DepCol,{t:"🏉 Rugby",items:e.rugby
+}),React.createElement(DepCol,{t:"🏎️ Fórmula 1",items:e.f1}))):null}function Feriados({f:e}){if(!e||!Array.isArray(e.lista))return null;return React.createElement("div",{className:"feriados"
+},e.lista.length?e.lista.map((e,t)=>{return React.createElement("div",{key:t,className:"fer-row"},React.createElement("span",{className:"fer-dia"},(a=e.fecha,
+new Date(a+"T12:00:00").toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"numeric"}))),React.createElement("span",null,e.tipo," · ",e.nombre),React.createElement("span",{
+className:"fer-amb"+("Nacional"!==e.ambito?" solo":"")},e.ambito));var a}):React.createElement("div",{className:"d"},"📅 Sin feriados, asuetos ni días inhábiles en los próximos ",e.dias," días"))}
+function Indec({d:e}){if(!e||!e.inflacion)return null;const t=e=>(e>0?"+":"")+s(e,1)+" pp",a=({x:e,malo:t,pct:a})=>{if(!e)return null
+;const n="alcista"===e.dir?"↗":"bajista"===e.dir?"↘":"→",c="estable"===e.dir?"var(--muted)":"alcista"===e.dir!=!!t?"var(--up)":"var(--down)";return React.createElement("div",{className:"tend",style:{
+marginTop:6,paddingTop:6,borderTop:"1px solid var(--line)"}},React.createElement("div",{className:"sub",style:{color:c,fontWeight:600}},"Tendencia ",(new Date).getFullYear(),": ",n," ",e.dir))
+},n=({t:e,v:t,sub:n,var12:c,malo:l,per:r,tend:i,pct:o})=>React.createElement("div",{className:"card"},React.createElement("div",{className:"lbl"},e),React.createElement("div",{className:"val"
+},t),null!=c&&null!=c.v&&React.createElement("div",{className:"sub",style:{fontWeight:600,color:0===c.v?void 0:c.v>0!=!!l?"var(--up)":"var(--down)"}
+},c.v>0?"▲ ":c.v<0?"▼ ":"",c.txt),n&&React.createElement("div",{className:"sub"},n),r&&React.createElement("div",{className:"sub",style:{opacity:.75}},r),React.createElement(a,{x:i,malo:l,pct:o}))
+;return React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Datos INDEC"),React.createElement("div",{className:"grid g-mkt"},React.createElement(n,{
 t:"Inflación",v:s(e.inflacion.mensual,1)+"%",sub:"Interanual "+(null==e.inflacion.interanual?"—":s(e.inflacion.interanual,1)+"%"),per:e.inflacion.periodoTxt,malo:!0,tend:e.inflacion.tendencia
-}),React.createElement(c,{t:"Actividad (EMAE)",v:(n=e.emae.interanual,null==n?"—":(n>0?"+":"")+s(n,1)+"%"),var12:{v:e.emae.interanual,txt:"en 12 meses"},pct:!0,tend:e.emae.tendencia
-}),React.createElement(c,{t:"Desempleo",v:s(e.desempleo.valor,1)+"%",malo:!0,var12:{v:e.desempleo.variacion12m,txt:(null==e.desempleo.variacion12m?"":t(e.desempleo.variacion12m))+" en 12 meses"},
-tend:e.desempleo.tendencia}),React.createElement(c,{t:"Pobreza",v:s(e.pobreza.valor,1)+"%",malo:!0,var12:{v:e.pobreza.variacion12m,
-txt:(null==e.pobreza.variacion12m?"":t(e.pobreza.variacion12m))+" en 12 meses"},tend:e.pobreza.tendencia})));var n}function App(){
-const[e,t]=n(null),[s,m]=n(null),[d,u]=n(null),[p,g]=n(null),[v,R]=n(null),[E,h]=n(null),[f,y]=n(null),[b,N]=n(null),[w,D]=n(null),[k,S]=n(!1);l(()=>{const e=()=>S(window.scrollY>700)
-;return window.addEventListener("scroll",e,{passive:!0}),()=>window.removeEventListener("scroll",e)},[]);const[C,A]=n("todas"),[x,I]=n(""),T=i(()=>getJSON("/api/news").then(e=>{t(e),m(null)
-}).catch(e=>m(e.message)),[]),P=i(()=>getJSON("/api/markets").then(e=>{u(e),g(null)}).catch(e=>g(e.message)),[]);l(()=>{T(),P(),getJSON("/api/briefing?v=3").then(R).catch(()=>{})
-;const e=()=>getJSON("/api/clima").then(h).catch(()=>{});e();const t=setInterval(e,9e5),n=()=>getJSON("/api/deportes").then(y).catch(()=>{});n();const l=setInterval(n,18e5)
-;getJSON("/api/feriados").then(N).catch(()=>{}),getJSON("/api/indec").then(D).catch(()=>{});const r=setInterval(T,a),i=setInterval(P,c);return()=>{clearInterval(r),clearInterval(i),clearInterval(t),
-clearInterval(l)}},[]);const M=e?.categories||{},$=r(()=>{if(!e)return[];let t;if("todas"===C){const a=new Set;t=[],Object.values(e.byCategory).flat().forEach(e=>{a.has(e.link)||(a.add(e.link),
+}),React.createElement(n,{t:"Actividad (EMAE)",v:(c=e.emae.interanual,null==c?"—":(c>0?"+":"")+s(c,1)+"%"),var12:{v:e.emae.interanual,txt:"en 12 meses"},pct:!0,tend:e.emae.tendencia
+}),React.createElement(n,{t:"Desempleo",v:s(e.desempleo.valor,1)+"%",malo:!0,var12:{v:e.desempleo.variacion12m,txt:(null==e.desempleo.variacion12m?"":t(e.desempleo.variacion12m))+" en 12 meses"},
+tend:e.desempleo.tendencia}),React.createElement(n,{t:"Pobreza",v:s(e.pobreza.valor,1)+"%",malo:!0,var12:{v:e.pobreza.variacion12m,
+txt:(null==e.pobreza.variacion12m?"":t(e.pobreza.variacion12m))+" en 12 meses"},tend:e.pobreza.tendencia})));var c}function App(){
+const[e,t]=c(null),[s,m]=c(null),[d,u]=c(null),[p,v]=c(null),[g,R]=c(null),[E,h]=c(null),[f,b]=c(null),[y,N]=c(null),[w,D]=c(null),[S,k]=c(!1);l(()=>{const e=()=>k(window.scrollY>700)
+;return window.addEventListener("scroll",e,{passive:!0}),()=>window.removeEventListener("scroll",e)},[]);const[C,A]=c("todas"),[x,T]=c(""),I=i(()=>getJSON("/api/news").then(e=>{t(e),m(null)
+}).catch(e=>m(e.message)),[]),$=i(()=>getJSON("/api/markets").then(e=>{u(e),v(null)}).catch(e=>v(e.message)),[]);l(()=>{I(),$(),getJSON("/api/briefing?v=3").then(R).catch(()=>{})
+;const e=()=>getJSON("/api/clima").then(h).catch(()=>{});e();const t=setInterval(e,9e5),c=()=>getJSON("/api/deportes").then(b).catch(()=>{});c();const l=setInterval(c,18e5)
+;getJSON("/api/feriados").then(N).catch(()=>{}),getJSON("/api/indec").then(D).catch(()=>{});const r=setInterval(I,a),i=setInterval($,n);return()=>{clearInterval(r),clearInterval(i),clearInterval(t),
+clearInterval(l)}},[]);const P=e?.categories||{},M=r(()=>{if(!e)return[];let t;if("todas"===C){const a=new Set;t=[],Object.values(e.byCategory).flat().forEach(e=>{a.has(e.link)||(a.add(e.link),
 t.push(e))}),t.sort((e,t)=>(t.ts||0)-(e.ts||0))}else t=e.byCategory[C]||[];if(x.trim()){const e=x.toLowerCase();t=t.filter(t=>(t.title+" "+t.summary+" "+t.source).toLowerCase().includes(e))}
 return t.slice(0,120)},[e,C,x]),z=(new Date).toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"});return React.createElement(React.Fragment,null,React.createElement(Ticker,{m:d
 }),React.createElement("div",{className:"wrap"},React.createElement("header",{className:"mast"},React.createElement("div",{className:"mast-top"},React.createElement("div",{className:"brand"
 },"Argentina",React.createElement("span",null,"Daily"),React.createElement("i",null,".")),React.createElement("div",{className:"meta"},React.createElement("div",{style:{textTransform:"capitalize"}
 },z),React.createElement("div",null,e?`act. ${new Date(e.updated).toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hourCycle:"h23"})}`:"Cargando…"))),React.createElement("div",{
-className:"mast-sub"},React.createElement(Clima,{c:E}),React.createElement(Feriados,{f:b}))),s&&React.createElement("div",{className:"err",style:{marginTop:24}
+className:"mast-sub"},React.createElement(Clima,{c:E}),React.createElement(Feriados,{f:y}))),s&&React.createElement("div",{className:"err",style:{marginTop:24}
 },"No se pudieron cargar las noticias: ",s),!e&&!s&&React.createElement("div",{className:"news",style:{marginTop:24}},Array.from({length:3}).map((e,t)=>React.createElement("div",{className:"skel",
-key:t,style:{height:220}}))),e&&React.createElement(Highlights,{items:e.highlights,cats:M}),v?.text&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
-},"Resumen del día"),React.createElement("div",{className:"brief"},v.text)),React.createElement(Markets,{m:d,err:p,indec:w}),React.createElement(Deportes,{d:f
+key:t,style:{height:220}}))),e&&React.createElement(Highlights,{items:e.highlights,cats:P}),g?.text&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
+},"Resumen del día"),React.createElement("div",{className:"brief"},g.text)),React.createElement(Markets,{m:d,err:p,indec:w}),React.createElement(Deportes,{d:f
 }),e&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Todas las noticias"),React.createElement("div",{className:"toolbar"},React.createElement("div",{
 className:"tabs scroll-x"},React.createElement("button",{className:"tab"+("todas"===C?" on":""),onClick:()=>A("todas")
-},"Todas"),Object.entries(M).filter(([e])=>"congreso"!==e&&"legislatura"!==e).map(([t,a])=>React.createElement("button",{key:t,className:"tab"+(C===t?" on":""),onClick:()=>A(t)
+},"Todas"),Object.entries(P).filter(([e])=>"congreso"!==e&&"legislatura"!==e).map(([t,a])=>React.createElement("button",{key:t,className:"tab"+(C===t?" on":""),onClick:()=>A(t)
 },React.createElement("span",{style:{color:C===t?"#111":o[t]}},"●")," ",a," ",React.createElement("span",{style:{opacity:.6}},"(",e.byCategory[t]?.length||0,")")))),React.createElement("input",{
-className:"search",placeholder:"Buscar: Milei, YPF, Fed, Irán…",value:x,onChange:e=>I(e.target.value)})),React.createElement(NewsGrid,{items:$,cats:M})),k&&React.createElement("button",{
+className:"search",placeholder:"Buscar: Milei, YPF, Fed, Irán…",value:x,onChange:e=>T(e.target.value)})),React.createElement(NewsGrid,{items:M,cats:P})),S&&React.createElement("button",{
 className:"arriba","aria-label":"Volver arriba",onClick:()=>window.scrollTo({top:0,behavior:"smooth"})
 },"↑"),React.createElement("footer",null,"Noticias: La Nación · Clarín · Ámbito · El Cronista · BBC Mundo · DW · France 24 · El País · CriptoNoticias. Mercados: DolarAPI · ArgentinaDatos · BCRA · Polymarket · CoinGecko/Kraken · Yahoo Finance. Clima: Open-Meteo. Deportes: ESPN. Feriados: ArgentinaDatos. INDEC: ArgentinaDatos · datos.gob.ar · informes del INDEC.",React.createElement("br",null),"Datos informativos, pueden tener demora. No es asesoramiento financiero.")))
 }const p={get:e=>{try{return localStorage.getItem(e)}catch(e){return null}},set:(e,t)=>{try{localStorage.setItem(e,t)}catch(e){}},del:e=>{try{localStorage.removeItem(e)}catch(e){}}
-},g=e=>btoa(String.fromCharCode(...new Uint8Array(e))),v=e=>Uint8Array.from(atob(e),e=>e.charCodeAt(0)),R=e=>crypto.getRandomValues(new Uint8Array(e));function idDispositivo(){let e=p.get("ad_dev")
+},v=e=>btoa(String.fromCharCode(...new Uint8Array(e))),g=e=>Uint8Array.from(atob(e),e=>e.charCodeAt(0)),R=e=>crypto.getRandomValues(new Uint8Array(e));function idDispositivo(){let e=p.get("ad_dev")
 ;return e||(e=[...R(16)].map(e=>e.toString(16).padStart(2,"0")).join(""),p.set("ad_dev",e)),e}function infoDispositivo(){const e=navigator.userAgent||"";let t
 ;return(t=e.match(/iPhone OS (\d+)/))?"iPhone · iOS "+t[1]:(t=e.match(/Android (\d+)[^;]*;\s*([^;)]+)/))?(t[2].trim()||"Android")+" · Android "+t[1]:e.slice(0,60)}async function verificarCodigo(t){
 const a=await fetch(e+"/api/acceso",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({codigo:t,device:idDispositivo(),info:infoDispositivo()})
-}),c=await a.json().catch(()=>({}));return{ok:!!c.ok,abierto:!!c.abierto,motivo:c.motivo||"",nombre:c.nombre||""}}
+}),n=await a.json().catch(()=>({}));return{ok:!!n.ok,abierto:!!n.abierto,motivo:n.motivo||"",nombre:n.nombre||""}}
 const E="Este código está activo en otro dispositivo. Pedile al administrador que lo libere.";async function biometriaDisponible(){try{
 return!(!window.PublicKeyCredential||!await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())}catch(e){return!1}}async function activarBiometria(){
 const e=await navigator.credentials.create({publicKey:{challenge:R(32),rp:{name:"Argentina Daily"},user:{id:R(16),name:"lector",displayName:"Lector de Argentina Daily"},pubKeyCredParams:[{
 type:"public-key",alg:-7},{type:"public-key",alg:-257}],authenticatorSelection:{authenticatorAttachment:"platform",userVerification:"required",residentKey:"preferred"},timeout:6e4}})
-;p.set("ad_bio",g(e.rawId))}async function pedirBiometria(){const e=p.get("ad_bio");await navigator.credentials.get({publicKey:{challenge:R(32),allowCredentials:[{type:"public-key",id:v(e)}],
-userVerification:"required",timeout:6e4}})}function Ingreso({children:e}){const[t,a]=n("cargando"),[c,r]=n(""),[i,o]=n(""),[s,m]=n(!1),d=async()=>{try{await pedirBiometria(),a("listo")}catch(e){
+;p.set("ad_bio",v(e.rawId))}async function pedirBiometria(){const e=p.get("ad_bio");await navigator.credentials.get({publicKey:{challenge:R(32),allowCredentials:[{type:"public-key",id:g(e)}],
+userVerification:"required",timeout:6e4}})}function Ingreso({children:e}){const[t,a]=c("cargando"),[n,r]=c(""),[i,o]=c(""),[s,m]=c(!1),d=async()=>{try{await pedirBiometria(),a("listo")}catch(e){
 r("No se pudo verificar. Probá de nuevo."),a("bio")}};l(()=>{(async()=>{const e=p.get("ad_codigo");let t=null;try{t=await verificarCodigo(e||"")}catch(e){t=null}if(t&&t.abierto)a("listo");else{
 if(e)return t&&!t.ok?(p.del("ad_codigo"),p.del("ad_bio"),r("otro_dispositivo"===t.motivo?E:"El código de ingreso cambió. Ingresá el nuevo."),
 void a("codigo")):void(p.get("ad_bio")&&await biometriaDisponible()?(a("bio"),d()):a("listo"));a("codigo")}})()},[]);return l(()=>{if("listo"!==t)return;const e=setInterval(async()=>{
@@ -292,7 +301,7 @@ className:"bloqueo-btn",style:{width:"100%",border:0,fontSize:16},onClick:async(
 },"Ahora no"))),"bio"===t&&React.createElement("div",{style:{marginTop:24}},React.createElement("div",{style:{fontSize:40}
 },"🙂"),React.createElement("h2",null,"Desbloquear"),React.createElement("button",{className:"bloqueo-btn",style:{width:"100%",border:0,fontSize:16},onClick:d
 },"Usar Face ID"),React.createElement("p",null,React.createElement("a",{href:"#",onClick:e=>{e.preventDefault(),p.del("ad_bio"),p.del("ad_codigo"),r(""),a("codigo")},style:{color:"var(--muted)",
-textDecoration:"underline"}},"Entrar con el código"))),c&&React.createElement("p",{style:{color:"#ffb3b3"}},c)))}function esCelular(){const e=navigator.userAgent||"";if(/iPad|Tablet/i.test(e))return!1
+textDecoration:"underline"}},"Entrar con el código"))),n&&React.createElement("p",{style:{color:"#ffb3b3"}},n)))}function esCelular(){const e=navigator.userAgent||"";if(/iPad|Tablet/i.test(e))return!1
 ;if(/iPhone|iPod|Android.+Mobile|Windows Phone/i.test(e))return!0;const t=window.matchMedia&&window.matchMedia("(pointer: coarse)").matches,a=Math.min(window.screen.width,window.screen.height)
 ;return t&&a<600}function SoloCelular(){const e=location.href.split("#")[0];return React.createElement("div",{className:"bloqueo"},React.createElement("div",{className:"bloqueo-box"
 },React.createElement("div",{className:"brand",style:{fontSize:34}},"Argentina",React.createElement("span",null,"Daily"),React.createElement("i",null,".")),React.createElement("div",{style:{

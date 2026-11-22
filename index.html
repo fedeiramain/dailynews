@@ -137,11 +137,14 @@
   @media(max-width:480px){.mapa-v{font-size:15px}.mapa-box{padding:9px 10px}}
   .rcausas{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;margin-top:12px}
   .rcausas > div + div{border-left:1px solid var(--line);padding-left:18px}
+  .rcausas.rc3{grid-template-columns:.8fr 1.3fr 1.1fr}
+  @media(max-width:1100px){.rcausas.rc3{grid-template-columns:1fr 1fr}.rcausas.rc3 > div:last-child{grid-column:1 / -1;border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:12px}}
   .rc-notas{font-size:12px;color:var(--muted);margin-top:6px}
   .rc-grupo{margin-top:10px}
   .rc-tend{font-size:11px;font-weight:700;margin-top:3px}
   .rc-tend span{font-weight:400;color:var(--muted)}
   .rc-tsum{font-size:13px;margin-top:8px;font-weight:600}
+  .rc-tlec{font-size:12.5px;margin-top:6px;padding:6px 8px;border-radius:8px;background:var(--panel2);line-height:1.4}
   .rc-gt{font-size:11px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;color:var(--accent)}
   .rc-fondo .rc-gt{color:var(--muted)}
   .rc-fondo .rc-datos{opacity:.85}
@@ -152,7 +155,7 @@
   .rc-notas a{color:var(--accent);text-decoration:none}
   .rc-est{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
   .rc-est > div{background:var(--panel2);border-radius:8px;padding:8px 10px}
-  @media(max-width:900px){.rcausas{grid-template-columns:1fr}.rcausas > div + div{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:12px}}
+  @media(max-width:900px){.rcausas,.rcausas.rc3{grid-template-columns:1fr}.rcausas > div + div{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:12px}}
   @media(max-width:480px){.rc-est{grid-template-columns:1fr 1fr 1fr;gap:6px}.rc-est .mapa-v{font-size:14px}.rc-est .mapa-t{font-size:11px}}
   .dep-grid{display:grid;grid-auto-flow:column;grid-auto-columns:84%;gap:8px;align-items:start;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -14px;padding:0 14px}
   .dep-grid::-webkit-scrollbar{display:none}
@@ -264,9 +267,13 @@ gridColumn:"1/-1",marginTop:4}},"Los montos no se suman: parte de los depósitos
 alcista:["▲","Alcista","var(--down)"],bajista:["▼","Bajista","var(--up)"],estable:["▬","Estable","var(--muted)"]}[e.dir];return React.createElement("div",{className:"rc-tend",style:{color:a[2]}
 },a[0]," ",a[1]," ",React.createElement("span",null,e.dif>0?"+":"",o(e.dif,0)," en 7 días"))}function resumenTendRp(e){
 const a=e=>"alcista"===e?"empuja hacia arriba":"bajista"===e?"empuja hacia abajo":"casi no se movió",t=e.internacional,n=e.argentino,c=Math.abs(t.dif)<10&&Math.abs(n.dif)<10?"":Math.abs(n.dif)>=Math.abs(t.dif)?" Lo que más pesa esta semana es lo argentino.":" Lo que más pesa esta semana es lo internacional."
-;return`En la semana: el contexto internacional ${a(t.dir)} y el riesgo argentino ${a(n.dir)}.${c}`}function RiesgoCausas({c:e,rp:a}){const t=a?.contexto?.estimacion
-;if(!e?.datos?.length&&!t)return null;return React.createElement("div",{className:"card rcausas"},React.createElement("div",null,React.createElement("div",{className:"lbl"
-},"Riesgo país · qué dicen los datos"),e?.direccion&&React.createElement("div",{style:{fontWeight:600,marginTop:6}
+;return`En la semana: el contexto internacional ${a(t.dir)} y el riesgo argentino ${a(n.dir)}.${c}`}function lecturaPesoRp(e){const a=e.internacional,t=e.argentino
+;return Math.abs(a.dif)<10&&Math.abs(t.dif)<10?null:Math.abs(t.dif)>=Math.abs(a.dif)?"🇦🇷 Pesa lo local: depende de decisiones propias (reservas, pagos, señales políticas) y puede revertirse si se corrigen; lo electoral recién se despeja con el resultado.":"🌎 Pesa lo internacional: Argentina acompaña al resto de los emergentes. Es mejor diagnóstico, pero no depende de medidas locales."
+}function RiesgoCausas({c:e,rp:a}){const t=a?.contexto?.estimacion;if(!a)return null;const n=e=>new Date(e+"T12:00:00").toLocaleDateString("es-AR",{day:"numeric",month:"numeric"})
+;return React.createElement("div",{className:"card hl rcausas"+(t?" rc3":"")},React.createElement("div",null,React.createElement("div",{className:"lbl"},"Riesgo país"),React.createElement("div",{
+className:"val"},o(a.value,0)," pb"),React.createElement("div",{className:d(null==a.change?null:-a.change),style:{fontSize:14,fontFamily:"JetBrains Mono",marginTop:4}
+},m(a.change),a.date&&React.createElement("span",{style:{color:"var(--muted)",fontFamily:"inherit",fontSize:12}}," · cierre ",n(a.date))),React.createElement(RiesgoExtra,{rp:a
+})),React.createElement("div",null,React.createElement("div",{className:"lbl"},"Qué dicen los datos"),e?.direccion&&React.createElement("div",{style:{fontWeight:600,marginTop:6}
 },e.direccion),e?.datos?.length?React.createElement(React.Fragment,null,[["cambio","Lo que cambió esta semana"],["fondo","Contexto de fondo · se sabe de antes, no explica un salto por sí solo"]].map(([a,t])=>{
 const n=e.datos.filter(e=>(e.g||"cambio")===a);return n.length?React.createElement("div",{key:a,className:"rc-grupo rc-"+a},React.createElement("div",{className:"rc-gt"},t),React.createElement("div",{
 className:"rc-datos"},n.map((e,a)=>React.createElement("div",{key:a},React.createElement("b",null,e.t,":")," ",e.txt)))):null})):React.createElement("div",{className:"sub"
@@ -277,10 +284,10 @@ key:t,href:a.link,target:"_blank",rel:"noopener",title:a.title},a.source," ",t+1
 })),React.createElement("div",null,React.createElement("div",{className:"mapa-t"},"Valor actual"),React.createElement("div",{className:"mapa-v"},o(t.actual,0)," pb"),React.createElement(TendRp,{
 t:t.tendencia?.total})),React.createElement("div",null,React.createElement("div",{className:"mapa-t"},"Riesgo argentino"),React.createElement("div",{className:"mapa-v",style:{
 color:t.argentino>0?"var(--down)":"var(--up)"}},t.argentino>0?"+":"",o(t.argentino,0)," pb"),React.createElement(TendRp,{t:t.tendencia?.argentino}))),t.tendencia&&React.createElement("div",{
-className:"rc-tsum"},resumenTendRp(t.tendencia)),React.createElement("div",{className:"mapa-s",style:{marginTop:6}
-},"Parte del riesgo país de hace 2 meses (",o(t.base.valor,0)," pb el ",(n=t.base.fecha,new Date(n+"T12:00:00").toLocaleDateString("es-AR",{day:"numeric",month:"numeric"
-})),") y le suma lo que se movieron los bonos emergentes desde entonces (",t.difEmergentes>=0?"+":"",t.difEmergentes," pb). Lo que sobra es riesgo propio de Argentina. Es una referencia aproximada.")))
-;var n}function RiesgoExtra({rp:e}){if(!e)return null;const a=e.contexto,t={marginTop:8,paddingTop:6,borderTop:"1px solid var(--line)"}
+className:"rc-tsum"},resumenTendRp(t.tendencia)),t.tendencia&&lecturaPesoRp(t.tendencia)&&React.createElement("div",{className:"rc-tlec"},lecturaPesoRp(t.tendencia)),React.createElement("div",{
+className:"mapa-s",style:{marginTop:6}
+},"Parte del riesgo país de hace 2 meses (",o(t.base.valor,0)," pb el ",n(t.base.fecha),") y le suma lo que se movieron los bonos emergentes desde entonces (",t.difEmergentes>=0?"+":"",t.difEmergentes," pb). Lo que sobra es riesgo propio de Argentina. Es una referencia aproximada.")))
+}function RiesgoExtra({rp:e}){if(!e)return null;const a=e.contexto,t={marginTop:8,paddingTop:6,borderTop:"1px solid var(--line)"}
 ;return React.createElement(React.Fragment,null,a&&React.createElement("div",{style:{...t,fontSize:13}},React.createElement("div",{style:{fontWeight:600}},{
 internacional:"🌎 Pesó más lo internacional",local:"🇦🇷 Pesó más lo local",estable:"Sin cambios relevantes"}[a.peso]),React.createElement("div",{style:{color:"var(--muted)",fontSize:12,marginTop:2}
 },"Emergentes ",m(a.emergentes),null!=a.tesoro10&&React.createElement(React.Fragment,null," · Tesoro EE.UU. ",o(a.tesoro10,2),"%"))),e.lectura&&React.createElement("div",{style:{...t,fontSize:12.5}
@@ -298,9 +305,8 @@ className:"lbl"},e),React.createElement("div",{className:"val"},a),React.createE
 t:"Dólar blue",v:r.blue?"$"+o(r.blue.venta,0):"—",ch:r.blue&&{n:null==r.blue.changeDay?null:-r.blue.changeDay,txt:m(r.blue.changeDay)},anio:r.blue?.changeYear,extra:React.createElement(PorInflacion,{
 x:r.blue?.porInflacion})}),React.createElement(s,{t:"Dólar CCL",v:r.ccl?"$"+o(r.ccl.venta,0):"—",ch:r.ccl&&{n:null==r.ccl.changeDay?null:-r.ccl.changeDay,txt:m(r.ccl.changeDay)},anio:r.ccl?.changeYear
 }),React.createElement(s,{t:"USDT Binance",v:r.usdt?"$"+o(r.usdt.precio,0):"—",ch:r.usdt&&{n:null==r.usdt.change?null:-r.usdt.change,txt:null==r.usdt.change?"P2P":m(r.usdt.change)}
-}),React.createElement(s,{t:"Reservas BCRA",v:i?`US$ ${o(i.value,0)} M`:"—",ch:i&&{n:i.changeDay,txt:(u=i.changeDay,null==u?"—":`${u>=0?"+":"−"}US$ ${o(Math.abs(u),0)} M`)}}),React.createElement(s,{
-t:"Riesgo país",v:e.riesgoPais?o(e.riesgoPais.value,0)+" pb":"—",ch:e.riesgoPais&&{n:null==e.riesgoPais.change?null:-e.riesgoPais.change,txt:m(e.riesgoPais.change)},
-extra:React.createElement(RiesgoExtra,{rp:e.riesgoPais})}),r.elecciones&&React.createElement("div",{className:"card hl full"},React.createElement("div",{className:"lbl"
+}),React.createElement(s,{t:"Reservas BCRA",v:i?`US$ ${o(i.value,0)} M`:"—",ch:i&&{n:i.changeDay,txt:(u=i.changeDay,null==u?"—":`${u>=0?"+":"−"}US$ ${o(Math.abs(u),0)} M`)}
+}),r.elecciones&&React.createElement("div",{className:"card hl full"},React.createElement("div",{className:"lbl"
 },"Elecciones 2027"),[["Oficialismo",r.elecciones.oficialismo],["Opositor",r.elecciones.oposicion]].map(([e,a])=>a&&React.createElement("div",{key:e,style:{marginTop:8}},React.createElement("div",{
 className:"sub",style:{marginTop:0}},e),React.createElement("div",{className:"row"},React.createElement("span",{style:{fontWeight:600}},a.name),React.createElement("span",{className:"val",style:{
 fontSize:20,marginTop:0}},Math.round(100*a.p),"%")))))),React.createElement(RiesgoCausas,{c:l,rp:e.riesgoPais}),React.createElement(BandaCard,{b:r.banda}),React.createElement(MapaDolares,{d:c
@@ -366,27 +372,27 @@ tend:e.desempleo.tendencia}),React.createElement(n,{t:"Pobreza",v:o(e.pobreza.va
 txt:(null==e.pobreza.variacion12m?"":a(e.pobreza.variacion12m))+" en 12 meses"},tend:e.pobreza.tendencia})));var c}function App(){
 const[e,a]=c(null),[o,m]=c(null),[d,u]=c(null),[p,v]=c(null),[R,E]=c(null),[g,h]=c(null),[f,b]=c(null),[y,N]=c(null),[S,D]=c(null),[w,A]=c({}),[C,k]=c(null),[T,x]=c(null),[$,M]=c(!1);l(()=>{
 const e=()=>M(window.scrollY>700);return window.addEventListener("scroll",e,{passive:!0}),()=>window.removeEventListener("scroll",e)},[])
-;const[I,P]=c("todas"),[j,z]=c(""),B=s(()=>getJSON("/api/news").then(e=>{a(e),m(null)}).catch(e=>m(e.message)),[]),F=s(()=>getJSON("/api/markets").then(e=>{u(e),v(null)}).catch(e=>v(e.message)),[])
+;const[I,j]=c("todas"),[z,P]=c(""),B=s(()=>getJSON("/api/news").then(e=>{a(e),m(null)}).catch(e=>m(e.message)),[]),F=s(()=>getJSON("/api/markets").then(e=>{u(e),v(null)}).catch(e=>v(e.message)),[])
 ;l(()=>{B(),F(),getJSON("/api/briefing?v=3").then(E).catch(()=>{});const e=()=>getJSON("/api/clima").then(h).catch(()=>{});e()
 ;const a=setInterval(e,9e5),c=()=>getJSON("/api/deportes").then(b).catch(()=>{});c();const l=setInterval(c,18e5);getJSON("/api/feriados").then(N).catch(()=>{}),
 getJSON("/api/indec").then(D).catch(()=>{}),getJSON("/api/objetivos").then(e=>A(e.objetivos||{})).catch(()=>{}),getJSON("/api/dolares-mapa").then(k).catch(()=>{})
 ;const r=()=>getJSON("/api/riesgo-causas").then(e=>(x(e),e)).catch(()=>null);r().then(e=>{e&&(e.causas||[]).length||setTimeout(r,2e4)});const s=setInterval(B,t),i=setInterval(F,n);return()=>{
 clearInterval(s),clearInterval(i),clearInterval(a),clearInterval(l)}},[]);const L=e?.categories||{},U=r(()=>{if(!e)return[];let a;if("todas"===I){const t=new Set;a=[],
-Object.values(e.byCategory).flat().forEach(e=>{t.has(e.link)||(t.add(e.link),a.push(e))}),a.sort((e,a)=>(a.ts||0)-(e.ts||0))}else a=e.byCategory[I]||[];if(j.trim()){const e=j.toLowerCase()
-;a=a.filter(a=>(a.title+" "+a.summary+" "+a.source).toLowerCase().includes(e))}return a.slice(0,120)},[e,I,j]),q=(new Date).toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"})
+Object.values(e.byCategory).flat().forEach(e=>{t.has(e.link)||(t.add(e.link),a.push(e))}),a.sort((e,a)=>(a.ts||0)-(e.ts||0))}else a=e.byCategory[I]||[];if(z.trim()){const e=z.toLowerCase()
+;a=a.filter(a=>(a.title+" "+a.summary+" "+a.source).toLowerCase().includes(e))}return a.slice(0,120)},[e,I,z]),O=(new Date).toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"})
 ;return React.createElement(React.Fragment,null,React.createElement(Ticker,{m:d}),React.createElement("div",{className:"wrap"},React.createElement("header",{className:"mast"
 },React.createElement("div",{className:"mast-top"},React.createElement("div",{className:"brand"
 },"Argentina",React.createElement("span",null,"Daily"),React.createElement("i",null,".")),React.createElement("div",{className:"meta"},React.createElement("div",{style:{textTransform:"capitalize"}
-},q),React.createElement("div",null,e?`act. ${new Date(e.updated).toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hourCycle:"h23"})}`:"Cargando…"))),React.createElement("div",{
+},O),React.createElement("div",null,e?`act. ${new Date(e.updated).toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hourCycle:"h23"})}`:"Cargando…"))),React.createElement("div",{
 className:"mast-sub"},React.createElement(Clima,{c:g}),React.createElement(Feriados,{f:y}))),o&&React.createElement("div",{className:"err",style:{marginTop:24}
 },"No se pudieron cargar las noticias: ",o),!e&&!o&&React.createElement("div",{className:"news",style:{marginTop:24}},Array.from({length:3}).map((e,a)=>React.createElement("div",{className:"skel",
 key:a,style:{height:220}}))),e&&React.createElement(Highlights,{items:e.highlights,cats:L}),R?.text&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
 },"Resumen del día"),React.createElement("div",{className:"brief"},R.text)),React.createElement(Markets,{m:d,err:p,indec:S,obj:w,mapa:C,causas:T}),React.createElement(Deportes,{d:f
 }),e&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Todas las noticias"),React.createElement("div",{className:"toolbar"},React.createElement("div",{
-className:"tabs scroll-x"},React.createElement("button",{className:"tab"+("todas"===I?" on":""),onClick:()=>P("todas")
-},"Todas"),Object.entries(L).filter(([e])=>"congreso"!==e&&"legislatura"!==e).map(([a,t])=>React.createElement("button",{key:a,className:"tab"+(I===a?" on":""),onClick:()=>P(a)
+className:"tabs scroll-x"},React.createElement("button",{className:"tab"+("todas"===I?" on":""),onClick:()=>j("todas")
+},"Todas"),Object.entries(L).filter(([e])=>"congreso"!==e&&"legislatura"!==e).map(([a,t])=>React.createElement("button",{key:a,className:"tab"+(I===a?" on":""),onClick:()=>j(a)
 },React.createElement("span",{style:{color:I===a?"#111":i[a]}},"●")," ",t," ",React.createElement("span",{style:{opacity:.6}},"(",e.byCategory[a]?.length||0,")")))),React.createElement("input",{
-className:"search",placeholder:"Buscar: Milei, YPF, Fed, Irán…",value:j,onChange:e=>z(e.target.value)})),React.createElement(NewsGrid,{items:U,cats:L})),$&&React.createElement("button",{
+className:"search",placeholder:"Buscar: Milei, YPF, Fed, Irán…",value:z,onChange:e=>P(e.target.value)})),React.createElement(NewsGrid,{items:U,cats:L})),$&&React.createElement("button",{
 className:"arriba","aria-label":"Volver arriba",onClick:()=>window.scrollTo({top:0,behavior:"smooth"})
 },"↑"),React.createElement("footer",null,"Noticias: La Nación · Clarín · Ámbito · El Cronista · BBC Mundo · DW · France 24 · El País · CriptoNoticias. Mercados: DolarAPI · ArgentinaDatos · BCRA · Polymarket · CoinGecko/Kraken · Yahoo Finance. Clima: Open-Meteo. Deportes: ESPN. Feriados: ArgentinaDatos. INDEC: ArgentinaDatos · datos.gob.ar · informes del INDEC.",React.createElement("br",null),"Datos informativos, pueden tener demora. No es asesoramiento financiero.")))
 }const p={get:e=>{try{return localStorage.getItem(e)}catch(e){return null}},set:(e,a)=>{try{localStorage.setItem(e,a)}catch(e){}},del:e=>{try{localStorage.removeItem(e)}catch(e){}}

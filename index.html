@@ -348,10 +348,10 @@ timeZone:"America/Argentina/Buenos_Aires"})}};function DepFila({x:e,golf:a}){con
 },t.dia,React.createElement("br",null),a?e.hasta?"al "+new Date(e.hasta).toLocaleDateString("es-AR",{day:"numeric",month:"short"
 }):"":t.hora),React.createElement("div",null,e.final&&React.createElement("div",{className:"dep-final"},"🏆 FINAL"),React.createElement("div",{style:{fontWeight:600}
 },e.partido),React.createElement("div",{className:"dep-tor"},e.torneo,e.lugar?" · "+e.lugar:""),"in"===e.estado&&React.createElement("div",{className:"live"
-},"● EN VIVO",e.marcador?" · "+e.marcador:"")))}function DepCol({t:e,items:a,golf:t}){const[n,l]=c(!1),r=a||[];if(!r.length)return null;const s=n?r:r.slice(0,2),i=r.length-2
-;return React.createElement("div",{className:"card"},React.createElement("div",{className:"lbl",style:{marginBottom:4}},e),s.map((e,a)=>React.createElement(DepFila,{key:a,x:e,golf:t
-})),i>0&&React.createElement("button",{className:"dep-more",onClick:()=>l(!n)},n?"Ver menos ▴":`Ver ${i} más ▾`))}function Deportes({d:e}){
-return e&&[e.futbol,e.tenis,e.golf,e.polo,e.rugby,e.f1].some(e=>e?.length)?React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
+},"● EN VIVO",e.marcador?" · "+e.marcador:"")))}function DepCol({t:e,items:a,golf:t}){const[n,l]=c(!1),r=a||[];if(!r.length)return null
+;const s=Math.max(2,r.filter(e=>"in"===e.estado).length),i=n?r:r.slice(0,s),o=r.length-s;return React.createElement("div",{className:"card"},React.createElement("div",{className:"lbl",style:{
+marginBottom:4}},e),i.map((e,a)=>React.createElement(DepFila,{key:a,x:e,golf:t})),o>0&&React.createElement("button",{className:"dep-more",onClick:()=>l(!n)},n?"Ver menos ▴":`Ver ${o} más ▾`))}
+function Deportes({d:e}){return e&&[e.futbol,e.tenis,e.golf,e.polo,e.rugby,e.f1].some(e=>e?.length)?React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
 },"Deportes · próximos partidos"),React.createElement("div",{className:"dep-grid"},React.createElement(DepCol,{t:"⚽ Fútbol",items:e.futbol}),React.createElement(DepCol,{t:"🎾 Tenis",items:e.tenis
 }),React.createElement(DepCol,{t:"⛳ Golf",items:e.golf,golf:!0}),React.createElement(DepCol,{t:"🏇 Polo",items:e.polo}),React.createElement(DepCol,{t:"🏉 Rugby",items:e.rugby
 }),React.createElement(DepCol,{t:"🏎️ Fórmula 1",items:e.f1}))):null}function Feriados({f:e}){if(!e||!Array.isArray(e.lista))return null;return React.createElement("div",{className:"feriados"
@@ -370,24 +370,23 @@ t:"Inflación",v:o(e.inflacion.mensual,1)+"%",sub:"Interanual "+(null==e.inflaci
 }),React.createElement(n,{t:"Desempleo",v:o(e.desempleo.valor,1)+"%",malo:!0,var12:{v:e.desempleo.variacion12m,txt:(null==e.desempleo.variacion12m?"":a(e.desempleo.variacion12m))+" en 12 meses"},
 tend:e.desempleo.tendencia}),React.createElement(n,{t:"Pobreza",v:o(e.pobreza.valor,1)+"%",malo:!0,var12:{v:e.pobreza.variacion12m,
 txt:(null==e.pobreza.variacion12m?"":a(e.pobreza.variacion12m))+" en 12 meses"},tend:e.pobreza.tendencia})));var c}function App(){
-const[e,a]=c(null),[o,m]=c(null),[d,u]=c(null),[p,v]=c(null),[R,E]=c(null),[g,h]=c(null),[f,b]=c(null),[y,N]=c(null),[S,D]=c(null),[w,A]=c({}),[T,k]=c(null),[C,x]=c(null),[$,M]=c(!1);l(()=>{
+const[e,a]=c(null),[o,m]=c(null),[d,u]=c(null),[p,v]=c(null),[R,E]=c(null),[g,h]=c(null),[f,b]=c(null),[y,N]=c(null),[S,D]=c(null),[w,A]=c({}),[T,k]=c(null),[x,C]=c(null),[$,M]=c(!1);l(()=>{
 const e=()=>M(window.scrollY>700);return window.addEventListener("scroll",e,{passive:!0}),()=>window.removeEventListener("scroll",e)},[])
 ;const[j,z]=c("todas"),[I,P]=c(""),F=s(()=>getJSON("/api/news").then(e=>{a(e),m(null)}).catch(e=>m(e.message)),[]),B=s(()=>getJSON("/api/markets").then(e=>{u(e),v(null)}).catch(e=>v(e.message)),[])
 ;l(()=>{F(),B(),getJSON("/api/briefing?v=3").then(E).catch(()=>{});const e=()=>getJSON("/api/clima").then(h).catch(()=>{});e()
-;const a=setInterval(e,9e5),c=()=>getJSON("/api/deportes").then(b).catch(()=>{});c();const l=setInterval(c,18e5);getJSON("/api/feriados").then(N).catch(()=>{}),
+;const a=setInterval(e,9e5),c=()=>getJSON("/api/deportes").then(b).catch(()=>{});c();const l=setInterval(c,3e5);getJSON("/api/feriados").then(N).catch(()=>{}),
 getJSON("/api/indec").then(D).catch(()=>{}),getJSON("/api/objetivos").then(e=>A(e.objetivos||{})).catch(()=>{}),getJSON("/api/dolares-mapa").then(k).catch(()=>{})
-;const r=()=>getJSON("/api/riesgo-causas").then(e=>(x(e),e)).catch(()=>null);r().then(e=>{e&&(e.causas||[]).length||setTimeout(r,2e4)});const s=setInterval(F,t),i=setInterval(B,n);return()=>{
+;const r=()=>getJSON("/api/riesgo-causas").then(e=>(C(e),e)).catch(()=>null);r().then(e=>{e&&(e.causas||[]).length||setTimeout(r,2e4)});const s=setInterval(F,t),i=setInterval(B,n);return()=>{
 clearInterval(s),clearInterval(i),clearInterval(a),clearInterval(l)}},[]);const L=e?.categories||{},U=r(()=>{if(!e)return[];let a;if("todas"===j){const t=new Set;a=[],
 Object.values(e.byCategory).flat().forEach(e=>{t.has(e.link)||(t.add(e.link),a.push(e))}),a.sort((e,a)=>(a.ts||0)-(e.ts||0))}else a=e.byCategory[j]||[];if(I.trim()){const e=I.toLowerCase()
 ;a=a.filter(a=>(a.title+" "+a.summary+" "+a.source).toLowerCase().includes(e))}return a.slice(0,120)},[e,j,I]),q=(new Date).toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"})
 ;return React.createElement(React.Fragment,null,React.createElement(Ticker,{m:d}),React.createElement("div",{className:"wrap"},React.createElement("header",{className:"mast"
 },React.createElement("div",{className:"mast-top"},React.createElement("div",{className:"brand"
 },"Argentina",React.createElement("span",null,"Daily"),React.createElement("i",null,".")),React.createElement("div",{className:"meta"},React.createElement("div",{style:{textTransform:"capitalize"}
-},q),React.createElement("div",null,e?`act. ${new Date(e.updated).toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hourCycle:"h23"})}`:"Cargando…"))),React.createElement("div",{
-className:"mast-sub"},React.createElement(Clima,{c:g}),React.createElement(Feriados,{f:y}))),o&&React.createElement("div",{className:"err",style:{marginTop:24}
+},q))),React.createElement("div",{className:"mast-sub"},React.createElement(Clima,{c:g}),React.createElement(Feriados,{f:y}))),o&&React.createElement("div",{className:"err",style:{marginTop:24}
 },"No se pudieron cargar las noticias: ",o),!e&&!o&&React.createElement("div",{className:"news",style:{marginTop:24}},Array.from({length:3}).map((e,a)=>React.createElement("div",{className:"skel",
 key:a,style:{height:220}}))),e&&React.createElement(Highlights,{items:e.highlights,cats:L}),R?.text&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
-},"Resumen del día"),React.createElement("div",{className:"brief"},R.text)),React.createElement(Markets,{m:d,err:p,indec:S,obj:w,mapa:T,causas:C}),React.createElement(Deportes,{d:f
+},"Resumen del día"),React.createElement("div",{className:"brief"},R.text)),React.createElement(Markets,{m:d,err:p,indec:S,obj:w,mapa:T,causas:x}),React.createElement(Deportes,{d:f
 }),e&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Todas las noticias"),React.createElement("div",{className:"toolbar"},React.createElement("div",{
 className:"tabs scroll-x"},React.createElement("button",{className:"tab"+("todas"===j?" on":""),onClick:()=>z("todas")
 },"Todas"),Object.entries(L).filter(([e])=>"congreso"!==e&&"legislatura"!==e).map(([a,t])=>React.createElement("button",{key:a,className:"tab"+(j===a?" on":""),onClick:()=>z(a)

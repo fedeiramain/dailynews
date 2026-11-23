@@ -124,6 +124,9 @@
   .banda-lim{font-size:11.5px;color:var(--muted);margin-top:4px}
   .banda-sen{margin:6px 0 0;padding-left:0;list-style:none;font-size:12.5px;line-height:1.5;color:var(--ink)}
   @media(max-width:900px){.banda{grid-template-columns:1fr}.banda > div + div{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:12px}}
+  .banda-pd{grid-column:1/-1;border-left:0!important;padding-left:0!important;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .banda-pd + div{border-left:0!important;padding-left:0!important}
+  @media(max-width:900px){.banda-pd{border-bottom:0;padding-bottom:0}}
   .banda-venc{grid-column:1/-1;border-left:0!important;padding-left:0!important;border-top:1px solid var(--line);padding-top:12px}
   .banda-venc-lista{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px;font-size:13px}
   .banda-venc-item{background:var(--panel2);border-radius:8px;padding:8px 10px;line-height:1.5}
@@ -219,26 +222,29 @@ if(!e)return React.createElement("div",{className:"ticker"},React.createElement(
 ;const a=e.diferencia,t=Math.abs(a)<3?"en línea con la inflación":a<0?`${o(Math.abs(a),0)}% por debajo`:`${o(a,0)}% por encima`;return React.createElement("div",{style:{fontSize:13,marginTop:8,
 paddingTop:6,borderTop:"1px solid var(--line)"},title:`Blue de hace un año ($${o(e.base,0)}, ${e.baseFecha}) × inflación argentina ${o(e.inflAR,1)}% ÷ inflación EE.UU. ${o(e.inflUS,1)}%`
 },React.createElement("span",{style:{color:"var(--muted)"}},"Estimado por inflación "),React.createElement("span",{style:{fontFamily:"JetBrains Mono",fontWeight:600}
-},"$",o(e.teorico,0)),React.createElement("div",{style:{color:"var(--muted)",fontSize:12,marginTop:2}},"Blue ",t," · es solo una referencia"))}function BandaCard({b:e}){if(!e||!e.mayorista)return null
-;const a=e.mayorista,t=e=>null==e?"—":`${e>=0?"+":"−"}US$ ${o(Math.abs(e),0)} M`,n=null==e.posicion?null:Math.max(0,Math.min(1,e.posicion)),c=e.intervencion,l=e.presion,r=c?new Date(c.ultimo.fecha+"T12:00:00").toLocaleDateString("es-AR",{
-month:"long"}):"",s="compradora"===l?.lectura?"var(--down)":"vendedora"===l?.lectura?"var(--up)":"var(--muted)";return React.createElement("div",{className:"card banda"
-},React.createElement("div",null,React.createElement("div",{className:"lbl"},"Banda cambiaria · dólar mayorista"),React.createElement("div",{className:"row",style:{alignItems:"baseline",gap:10}
-},React.createElement("span",{className:"val"},"$",o(a.venta,2)),null!=a.changeDay&&React.createElement("span",{className:d(-a.changeDay),style:{fontFamily:"JetBrains Mono",fontSize:14}
-},m(a.changeDay))),null!=n&&React.createElement(React.Fragment,null,React.createElement("div",{className:"banda-bar"},React.createElement("div",{className:"banda-pos",style:{left:100*n+"%"}
-})),React.createElement("div",{className:"row banda-lim"},React.createElement("span",null,"Piso $",o(e.piso,0)),React.createElement("span",null,"Techo $",o(e.techo,0))),React.createElement("div",{
-className:"sub",style:{marginTop:6}
-},"A ",React.createElement("b",null,o(e.distTecho,0),"%")," del techo",e.estimado?" · techo estimado":""))),React.createElement("div",null,React.createElement("div",{className:"lbl"
-},"BCRA en el mercado"),c?React.createElement(React.Fragment,null,React.createElement("div",{style:{marginTop:6,fontWeight:600,color:c.ultimo.valor>=0?"var(--up)":"var(--down)"}
-},c.ultimo.valor>=0?"Compró":"Vendió"," US$ ",o(Math.abs(c.ultimo.valor),0)," M ",React.createElement("span",{style:{color:"var(--muted)",fontWeight:400,fontSize:12}},"(",(i=c.ultimo.fecha,
-new Date(i+"T12:00:00").toLocaleDateString("es-AR",{day:"numeric",month:"numeric"})),")")),React.createElement("div",{className:"mini-list",style:{marginTop:6}},React.createElement("div",{
-className:"item"},React.createElement("span",null,"Últimos 5 días"),React.createElement("span",{className:d(c.semana)},t(c.semana))),React.createElement("div",{className:"item"
-},React.createElement("span",{style:{textTransform:"capitalize"}},r),React.createElement("span",{className:d(c.mes)},t(c.mes))),React.createElement("div",{className:"item"
-},React.createElement("span",null,"En el año"),React.createElement("span",{className:d(c.anio)},t(c.anio))))):React.createElement("div",{className:"sub"
-},"Sin datos del BCRA")),React.createElement("div",null,React.createElement("div",{className:"lbl"},"Presión del día · estimación"),l&&React.createElement("div",{style:{marginTop:6,fontWeight:700,
-fontSize:16,color:s}},{compradora:"Compradora · faltan dólares",vendedora:"Vendedora · sobran dólares",equilibrada:"Equilibrada"}[l.lectura]),l?.senales?.length?React.createElement("ul",{
-className:"banda-sen"},l.senales.map((e,a)=>React.createElement("li",{key:a},e.s>0?"▲":"▼"," ",e.t))):React.createElement("div",{className:"sub"
-},"Sin señales fuertes hoy"),null!=l?.brecha&&React.createElement("div",{className:"sub",style:{marginTop:6}
-},"Blue vs CCL ",l.brecha>=0?"+":"",o(l.brecha,1),"% · ",l.brechaTxt),e.temporada&&React.createElement("div",{className:"sub",style:{marginTop:6}
+},"$",o(e.teorico,0)),React.createElement("div",{style:{color:"var(--muted)",fontSize:12,marginTop:2}},"Blue ",t," · es solo una referencia"))}function BandaCard({b:e,r:a}){
+if(!e||!e.mayorista)return null
+;const t=e.mayorista,n=e=>null==e?"—":`${e>=0?"+":"−"}US$ ${o(Math.abs(e),0)} M`,c=null==e.posicion?null:Math.max(0,Math.min(1,e.posicion)),l=e.intervencion,r=e.presion,s=l?new Date(l.ultimo.fecha+"T12:00:00").toLocaleDateString("es-AR",{
+month:"long"}):"",i="compradora"===r?.lectura?"var(--down)":"vendedora"===r?.lectura?"var(--up)":"var(--muted)",u=e.pesosDolares,p=u&&{pesos:["🇦🇷 El mercado entra a activos argentinos","var(--up)"],
+dolares:["💵 El mercado sale de activos argentinos a dólares","var(--down)"],neutral:["⚖️ Sin rumbo claro entre activos argentinos y dólares","var(--muted)"]}[u.lado]
+;return React.createElement("div",{className:"card banda"},React.createElement("div",null,React.createElement("div",{className:"lbl"},"Banda cambiaria · dólar mayorista"),React.createElement("div",{
+className:"row",style:{alignItems:"baseline",gap:10}},React.createElement("span",{className:"val"},"$",o(t.venta,2)),null!=t.changeDay&&React.createElement("span",{className:d(-t.changeDay),style:{
+fontFamily:"JetBrains Mono",fontSize:14}},m(t.changeDay))),null!=c&&React.createElement(React.Fragment,null,React.createElement("div",{className:"banda-bar"},React.createElement("div",{
+className:"banda-pos",style:{left:100*c+"%"}})),React.createElement("div",{className:"row banda-lim"
+},React.createElement("span",null,"Piso $",o(e.piso,0)),React.createElement("span",null,"Techo $",o(e.techo,0))),React.createElement("div",{className:"sub",style:{marginTop:6}
+},"A ",React.createElement("b",null,o(e.distTecho,0),"%")," del techo",e.estimado?" · techo estimado":"")),u&&React.createElement("div",{style:{marginTop:8,fontWeight:700,fontSize:14,color:p[1]}
+},p[0])),React.createElement("div",null,React.createElement("div",{className:"lbl"},"BCRA"),a&&React.createElement("div",{style:{marginTop:6}},React.createElement("div",{className:"sub"
+},"Reservas"),React.createElement("div",{style:{fontFamily:"JetBrains Mono",fontSize:20,fontWeight:600}},"US$ ",o(a.value,0)," M"),null!=a.changeDay&&React.createElement("div",{className:"sub"
+},React.createElement("span",{className:d(a.changeDay)},n(a.changeDay))," en el día · ",(v=a.date,new Date(v+"T12:00:00").toLocaleDateString("es-AR",{day:"numeric",month:"numeric"
+})))),l?React.createElement("div",{className:"mini-list",style:{marginTop:8}},React.createElement("div",{className:"item"
+},React.createElement("span",null,"Compras en el año"),React.createElement("span",{className:d(l.anio)},n(l.anio))),React.createElement("div",{className:"item"
+},React.createElement("span",null,"Compras en ",s),React.createElement("span",{className:d(l.mes)},n(l.mes)))):!a&&React.createElement("div",{className:"sub"
+},"Sin datos del BCRA")),React.createElement("div",null,React.createElement("div",{className:"lbl"},"Presión del día · estimación"),r&&React.createElement("div",{style:{marginTop:6,fontWeight:700,
+fontSize:16,color:i}},{compradora:"Compradora · demanda de dólares",vendedora:"Vendedora · oferta de dólares",equilibrada:"Equilibrada"
+}[r.lectura]),r?.senales?.filter(e=>!e.bcra).length?React.createElement("ul",{className:"banda-sen"},r.senales.filter(e=>!e.bcra).map((e,a)=>React.createElement("li",{key:a
+},e.s>0?"▲":"▼"," ",e.t))):React.createElement("div",{className:"sub"},"Sin señales fuertes hoy"),e.superavit&&React.createElement("div",{className:"sub",style:{marginTop:6}
+},"🚢 Superávit comercial de ",new Date(e.superavit.periodo+"-15T12:00:00").toLocaleDateString("es-AR",{month:"long"
+}),": ",e.superavit.saldo>=0?"+":"−","US$ ",o(Math.abs(e.superavit.saldo),0)," M"),e.temporada&&React.createElement("div",{className:"sub",style:{marginTop:6}
 },"📅 ",e.temporada)),(e.vencimientos?.length>0||e.vencAnual)&&React.createElement("div",{className:"banda-venc"},React.createElement("div",{className:"lbl"
 },"Próximos vencimientos de deuda ",React.createElement("span",{style:{textTransform:"none",letterSpacing:0}},"· meses con más de US$ 1.000 M")),e.vencAnual&&React.createElement("div",{
 className:"mapa-s",style:{marginTop:4}},React.createElement("b",{style:{color:"var(--ink)"}
@@ -247,8 +253,26 @@ className:"banda-venc-lista"},e.vencimientos.map((e,a)=>{const t=e.fecha?new Dat
 }):new Date(e.mes+"-15T12:00:00").toLocaleDateString("es-AR",{month:"long"});return React.createElement("div",{key:a,className:"banda-venc-item"},React.createElement("div",{style:{fontWeight:600}
 },React.createElement("span",{style:{textTransform:"capitalize"}},t),null!=e.dias&&React.createElement("span",{style:{color:"var(--muted)",fontWeight:400}
 }," · faltan ",e.dias," días")),React.createElement("div",null,e.quien," ",React.createElement("span",{style:{color:"var(--muted)"}},"(",e.que,")")),React.createElement("div",{style:{
-fontFamily:"JetBrains Mono"}},e.estimado?"≈ ":"","US$ ",o(e.monto,0)," M",e.estimado&&React.createElement("span",{style:{color:"var(--muted)",fontSize:11}}," estimado")))}))));var i}
-function MapaDolares({d:e}){if(!e||!e.depositos)return null
+fontFamily:"JetBrains Mono"}},e.estimado?"≈ ":"","US$ ",o(e.monto,0)," M",e.estimado&&React.createElement("span",{style:{color:"var(--muted)",fontSize:11}}," estimado")))}))));var v}
+function BalanzaCard({b:e}){if(!e)return null;const a=e=>`US$ ${o(Math.abs(e),0)} M`,t=e=>e>=0?"+":"−",n=e=>{const a=new Date(e+"-15T12:00:00").toLocaleDateString("es-AR",{month:"long",year:"numeric"
+});return a.charAt(0).toUpperCase()+a.slice(1)},c=e.cambiario,l=e.proximo?new Date(e.proximo+"T12:00:00").toLocaleDateString("es-AR",{day:"numeric",month:"numeric"}):null
+;return React.createElement("div",{className:"card mapa"},React.createElement("div",{className:"lbl",style:{gridColumn:"1/-1"}},"Balanza comercial · ",React.createElement("span",{style:{
+textTransform:"none",letterSpacing:0}},n(e.periodo))),React.createElement("div",{className:"mapa-box"},React.createElement("div",{className:"mapa-t"},"Exportaciones"),React.createElement("div",{
+className:"mapa-v"},a(e.expo)),React.createElement("div",{className:"mapa-s"},React.createElement("span",{className:d(e.expoVar)},m(e.expoVar))," interanual")),React.createElement("div",{
+className:"mapa-box"},React.createElement("div",{className:"mapa-t"},"Importaciones"),React.createElement("div",{className:"mapa-v"},a(e.impo)),React.createElement("div",{className:"mapa-s"
+},m(e.impoVar)," interanual")),React.createElement("div",{className:"mapa-box"},React.createElement("div",{className:"mapa-t"},"Saldo del mes"),React.createElement("div",{className:"mapa-v",style:{
+color:e.saldo>=0?"var(--up)":"var(--down)"}},t(e.saldo),a(e.saldo)),React.createElement("div",{className:"mapa-s"
+},e.mesesSuperavit," meses seguidos con superávit",e.energia?` · energía ${t(e.energia)}${a(e.energia)}`:"")),React.createElement("div",{className:"mapa-box"},React.createElement("div",{
+className:"mapa-t"},"En el año (ene–",e.anio.hasta,")"),React.createElement("div",{className:"mapa-v",style:{color:"var(--up)"}},t(e.anio.saldo),a(e.anio.saldo)),React.createElement("div",{
+className:"mapa-s"},"Mismo período de 2025: ",t(e.anio.saldoPrev),a(e.anio.saldoPrev))),React.createElement("div",{className:"mapa-box"},React.createElement("div",{className:"mapa-t"
+},"Últimos 12 meses"),React.createElement("div",{className:"mapa-v"},a(e.doceMeses.expo)),React.createElement("div",{className:"mapa-s"
+},"exportados (récord) · saldo ",t(e.doceMeses.saldo),a(e.doceMeses.saldo))),c&&React.createElement("div",{className:"mapa-box"},React.createElement("div",{className:"mapa-t"
+},"Dólares que entraron de verdad · ",n(c.periodo)),React.createElement("div",{className:"mapa-v",style:{color:c.ctaCorriente>=0?"var(--up)":"var(--down)"}
+},t(c.ctaCorriente),a(c.ctaCorriente)),React.createElement("div",{className:"mapa-s"
+},"Cuenta corriente cambiaria · el BCRA compró ",a(c.bcraCompro),c.dividendos?` · dividendos al exterior en el año (ene–${c.dividendos.hasta}) ≈ ${a(c.dividendos.valor)}`:"")),React.createElement("div",{
+className:"mapa-s",style:{gridColumn:"1/-1"}
+},"La balanza registra lo que pasa por la Aduana; los dólares que efectivamente entran al mercado son menos (cobros y pagos en otros tiempos, dividendos, intereses, turismo).",l?` Próximo dato: ${l}.`:""))
+}function MapaDolares({d:e}){if(!e||!e.depositos)return null
 ;const a=e=>`US$ ${o(e,0)} M`,t=e=>null==e?"—":`${e>=0?"+":"−"}${o(Math.abs(e),0)}`,n=e.depositos,c=e.dolarizacion,l=e.termometro,r="se calienta"===l.lectura?"var(--down)":"se enfría"===l.lectura?"var(--up)":"var(--muted)",s={
 "se calienta":"🔥 Se calienta","se enfría":"❄️ Se enfría",estable:"Estable"}[l.lectura];return React.createElement("div",{className:"card mapa"},React.createElement("div",{className:"lbl",style:{
 gridColumn:"1/-1"}},"Mapa de dólares"),React.createElement("div",{className:"mapa-box"},React.createElement("div",{className:"mapa-t"},"Reservas del BCRA"),React.createElement("div",{
@@ -310,8 +334,8 @@ t:"Reservas BCRA",v:i?`US$ ${o(i.value,0)} M`:"—",ch:i&&{n:i.changeDay,txt:(u=
 className:"card hl full"},React.createElement("div",{className:"lbl"
 },"Elecciones 2027"),[["Oficialismo",r.elecciones.oficialismo],["Opositor",r.elecciones.oposicion]].map(([e,a])=>a&&React.createElement("div",{key:e,style:{marginTop:8}},React.createElement("div",{
 className:"sub",style:{marginTop:0}},e),React.createElement("div",{className:"row"},React.createElement("span",{style:{fontWeight:600}},a.name),React.createElement("span",{className:"val",style:{
-fontSize:20,marginTop:0}},Math.round(100*a.p),"%")))))),React.createElement(RiesgoCausas,{c:l,rp:e.riesgoPais}),React.createElement(BandaCard,{b:r.banda}),React.createElement(MapaDolares,{d:c
-}),React.createElement(Indec,{d:t}),React.createElement("h2",{className:"section-title"},"Bolsas, petróleo y commodities"),React.createElement("div",{className:"grid g-mkt"
+fontSize:20,marginTop:0}},Math.round(100*a.p),"%")))))),React.createElement(RiesgoCausas,{c:l,rp:e.riesgoPais}),React.createElement(BandaCard,{b:r.banda,r:r.reservas}),React.createElement(Indec,{d:t
+}),React.createElement("h2",{className:"section-title"},"Bolsas, petróleo y commodities"),React.createElement("div",{className:"grid g-mkt"
 },[...e.indices,...e.commodities].map(e=>React.createElement("div",{className:"card",key:e.symbol},React.createElement("div",{className:"lbl"},e.name),React.createElement("div",{className:"val"
 },o(e.price)),React.createElement("div",{className:d(e.change),style:{fontSize:14,fontFamily:"JetBrains Mono",marginTop:4}},m(e.change))))),React.createElement("div",{className:"grid",style:{
 marginTop:8}},React.createElement("div",{className:"card"},React.createElement("div",{className:"lbl",style:{marginBottom:6}},"ADRs argentinos (NYSE · USD)"),React.createElement("div",{
@@ -370,27 +394,26 @@ t:"Inflación",v:o(e.inflacion.mensual,1)+"%",sub:"Interanual "+(null==e.inflaci
 }),React.createElement(n,{t:"Desempleo",v:o(e.desempleo.valor,1)+"%",malo:!0,var12:{v:e.desempleo.variacion12m,txt:(null==e.desempleo.variacion12m?"":a(e.desempleo.variacion12m))+" en 12 meses"},
 tend:e.desempleo.tendencia}),React.createElement(n,{t:"Pobreza",v:o(e.pobreza.valor,1)+"%",malo:!0,var12:{v:e.pobreza.variacion12m,
 txt:(null==e.pobreza.variacion12m?"":a(e.pobreza.variacion12m))+" en 12 meses"},tend:e.pobreza.tendencia})));var c}function App(){
-const[e,a]=c(null),[o,m]=c(null),[d,u]=c(null),[p,v]=c(null),[R,E]=c(null),[g,h]=c(null),[f,b]=c(null),[y,N]=c(null),[S,D]=c(null),[w,A]=c({}),[T,k]=c(null),[x,C]=c(null),[$,M]=c(!1);l(()=>{
+const[e,a]=c(null),[o,m]=c(null),[d,u]=c(null),[p,v]=c(null),[R,E]=c(null),[g,f]=c(null),[h,b]=c(null),[y,N]=c(null),[S,D]=c(null),[w,A]=c({}),[x,T]=c(null),[C,k]=c(null),[$,M]=c(!1);l(()=>{
 const e=()=>M(window.scrollY>700);return window.addEventListener("scroll",e,{passive:!0}),()=>window.removeEventListener("scroll",e)},[])
-;const[j,z]=c("todas"),[I,P]=c(""),F=s(()=>getJSON("/api/news").then(e=>{a(e),m(null)}).catch(e=>m(e.message)),[]),B=s(()=>getJSON("/api/markets").then(e=>{u(e),v(null)}).catch(e=>v(e.message)),[])
-;l(()=>{F(),B(),getJSON("/api/briefing?v=3").then(E).catch(()=>{});const e=()=>getJSON("/api/clima").then(h).catch(()=>{});e()
+;const[z,j]=c("todas"),[I,P]=c(""),B=s(()=>getJSON("/api/news").then(e=>{a(e),m(null)}).catch(e=>m(e.message)),[]),F=s(()=>getJSON("/api/markets").then(e=>{u(e),v(null)}).catch(e=>v(e.message)),[])
+;l(()=>{B(),F(),getJSON("/api/briefing?v=3").then(E).catch(()=>{});const e=()=>getJSON("/api/clima").then(f).catch(()=>{});e()
 ;const a=setInterval(e,9e5),c=()=>getJSON("/api/deportes").then(b).catch(()=>{});c();const l=setInterval(c,3e5);getJSON("/api/feriados").then(N).catch(()=>{}),
-getJSON("/api/indec").then(D).catch(()=>{}),getJSON("/api/objetivos").then(e=>A(e.objetivos||{})).catch(()=>{}),getJSON("/api/dolares-mapa").then(k).catch(()=>{})
-;const r=()=>getJSON("/api/riesgo-causas").then(e=>(C(e),e)).catch(()=>null);r().then(e=>{e&&(e.causas||[]).length||setTimeout(r,2e4)});const s=setInterval(F,t),i=setInterval(B,n);return()=>{
-clearInterval(s),clearInterval(i),clearInterval(a),clearInterval(l)}},[]);const L=e?.categories||{},U=r(()=>{if(!e)return[];let a;if("todas"===j){const t=new Set;a=[],
-Object.values(e.byCategory).flat().forEach(e=>{t.has(e.link)||(t.add(e.link),a.push(e))}),a.sort((e,a)=>(a.ts||0)-(e.ts||0))}else a=e.byCategory[j]||[];if(I.trim()){const e=I.toLowerCase()
-;a=a.filter(a=>(a.title+" "+a.summary+" "+a.source).toLowerCase().includes(e))}return a.slice(0,120)},[e,j,I]),q=(new Date).toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"})
-;return React.createElement(React.Fragment,null,React.createElement(Ticker,{m:d}),React.createElement("div",{className:"wrap"},React.createElement("header",{className:"mast"
-},React.createElement("div",{className:"mast-top"},React.createElement("div",{className:"brand"
+getJSON("/api/indec").then(D).catch(()=>{}),getJSON("/api/objetivos").then(e=>A(e.objetivos||{})).catch(()=>{});const r=()=>getJSON("/api/riesgo-causas").then(e=>(k(e),e)).catch(()=>null)
+;r().then(e=>{e&&(e.causas||[]).length||setTimeout(r,2e4)});const s=setInterval(B,t),i=setInterval(F,n);return()=>{clearInterval(s),clearInterval(i),clearInterval(a),clearInterval(l)}},[])
+;const L=e?.categories||{},U=r(()=>{if(!e)return[];let a;if("todas"===z){const t=new Set;a=[],Object.values(e.byCategory).flat().forEach(e=>{t.has(e.link)||(t.add(e.link),a.push(e))}),
+a.sort((e,a)=>(a.ts||0)-(e.ts||0))}else a=e.byCategory[z]||[];if(I.trim()){const e=I.toLowerCase();a=a.filter(a=>(a.title+" "+a.summary+" "+a.source).toLowerCase().includes(e))}return a.slice(0,120)
+},[e,z,I]),q=(new Date).toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"});return React.createElement(React.Fragment,null,React.createElement(Ticker,{m:d
+}),React.createElement("div",{className:"wrap"},React.createElement("header",{className:"mast"},React.createElement("div",{className:"mast-top"},React.createElement("div",{className:"brand"
 },"Argentina",React.createElement("span",null,"Daily"),React.createElement("i",null,".")),React.createElement("div",{className:"meta"},React.createElement("div",{style:{textTransform:"capitalize"}
 },q))),React.createElement("div",{className:"mast-sub"},React.createElement(Clima,{c:g}),React.createElement(Feriados,{f:y}))),o&&React.createElement("div",{className:"err",style:{marginTop:24}
 },"No se pudieron cargar las noticias: ",o),!e&&!o&&React.createElement("div",{className:"news",style:{marginTop:24}},Array.from({length:3}).map((e,a)=>React.createElement("div",{className:"skel",
 key:a,style:{height:220}}))),e&&React.createElement(Highlights,{items:e.highlights,cats:L}),R?.text&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
-},"Resumen del día"),React.createElement("div",{className:"brief"},R.text)),React.createElement(Markets,{m:d,err:p,indec:S,obj:w,mapa:T,causas:x}),React.createElement(Deportes,{d:f
+},"Resumen del día"),React.createElement("div",{className:"brief"},R.text)),React.createElement(Markets,{m:d,err:p,indec:S,obj:w,mapa:x,causas:C}),React.createElement(Deportes,{d:h
 }),e&&React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"},"Todas las noticias"),React.createElement("div",{className:"toolbar"},React.createElement("div",{
-className:"tabs scroll-x"},React.createElement("button",{className:"tab"+("todas"===j?" on":""),onClick:()=>z("todas")
-},"Todas"),Object.entries(L).filter(([e])=>"congreso"!==e&&"legislatura"!==e).map(([a,t])=>React.createElement("button",{key:a,className:"tab"+(j===a?" on":""),onClick:()=>z(a)
-},React.createElement("span",{style:{color:j===a?"#111":i[a]}},"●")," ",t," ",React.createElement("span",{style:{opacity:.6}},"(",e.byCategory[a]?.length||0,")")))),React.createElement("input",{
+className:"tabs scroll-x"},React.createElement("button",{className:"tab"+("todas"===z?" on":""),onClick:()=>j("todas")
+},"Todas"),Object.entries(L).filter(([e])=>"congreso"!==e&&"legislatura"!==e).map(([a,t])=>React.createElement("button",{key:a,className:"tab"+(z===a?" on":""),onClick:()=>j(a)
+},React.createElement("span",{style:{color:z===a?"#111":i[a]}},"●")," ",t," ",React.createElement("span",{style:{opacity:.6}},"(",e.byCategory[a]?.length||0,")")))),React.createElement("input",{
 className:"search",placeholder:"Buscar: Milei, YPF, Fed, Irán…",value:I,onChange:e=>P(e.target.value)})),React.createElement(NewsGrid,{items:U,cats:L})),$&&React.createElement("button",{
 className:"arriba","aria-label":"Volver arriba",onClick:()=>window.scrollTo({top:0,behavior:"smooth"})
 },"↑"),React.createElement("footer",null,"Datos informativos, pueden tener demora. No es asesoramiento financiero.")))}const p={get:e=>{try{return localStorage.getItem(e)}catch(e){return null}},

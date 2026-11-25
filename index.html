@@ -319,7 +319,7 @@ borderColor:"var(--line)"}
 },"us"===e.pais?"EE.UU. · ":"Argentina · ",e.quien),React.createElement("span",null,timeAgo(e.ts)),e.categories?.filter(e=>"portadas"!==e).slice(0,1).map(e=>React.createElement("span",{key:e,
 className:"badge",style:{color:i[e],borderColor:i[e]+"55"}},a?.[e]||e)))}function Img({src:e}){const[a,t]=c(!0);return e&&a?React.createElement("img",{src:e,loading:"lazy",
 referrerPolicy:"no-referrer",onError:()=>t(!1),alt:""}):null}function Highlights({items:e,cats:a}){const[t,n]=c(null),l=React.useRef(null);if(!e?.length)return null
-;const r=e.slice(0,6),o=r.findIndex(e=>e.image);if(o<0)return React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
+;const r=e.slice(0,6),o=r.findIndex(e=>e.image&&Date.now()-e.ts<1728e5);if(o<0)return React.createElement(React.Fragment,null,React.createElement("h2",{className:"section-title"
 },"Lo más importante · fuentes oficiales"),React.createElement("div",{className:"side-list hl-grid"},r.map(e=>React.createElement("a",{className:"s-item",key:e.link,href:e.link,target:"_blank",
 rel:"noopener"},React.createElement(Src,{it:e,cats:a}),React.createElement("h3",null,e.title)))));const i=null!=t&&t<r.length?t:o,s=r[i],m=r.map((e,a)=>[e,a]).filter(([,e])=>e!==i),d=e=>{n(e)
 ;const a=l.current;try{a&&a.scrollIntoView&&a.getBoundingClientRect().top<40&&a.scrollIntoView({behavior:"smooth",block:"start"})}catch(e){}}

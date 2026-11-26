@@ -10,8 +10,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta name="apple-mobile-web-app-title" content="ArgDaily" />
-<link rel="apple-touch-icon" href="https://small-waterfall-6097.fedetrade.workers.dev/apple-touch-icon.png" />
-<link rel="icon" type="image/png" href="https://small-waterfall-6097.fedetrade.workers.dev/icon-192.png" />
+<link rel="apple-touch-icon" href="https://dailynews.fedetrade.workers.dev/apple-touch-icon.png" />
+<link rel="icon" type="image/png" href="https://dailynews.fedetrade.workers.dev/icon-192.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
 <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
@@ -199,9 +199,9 @@ window.addEventListener("error",function(e){document.getElementById("root").inne
 
 <script>
 if("undefined"==typeof React||"undefined"==typeof ReactDOM)document.getElementById("root").innerHTML='<div style="padding:30px;color:#ffb3b3;font-family:sans-serif">No se pudo cargar React desde cdn.jsdelivr.net. Revisá tu conexión o un bloqueador de anuncios.</div>';else{
-const e="https://small-waterfall-6097.fedetrade.workers.dev",a="https://small-waterfall-6097.fedetrade.workers.dev/",t=6e5,n=12e4,{useState:c,useEffect:l,useMemo:r,useCallback:o}=React,i={
-politica:"#6cb4ee",economia:"#3ecf8e",dolar:"#9ad86b",mercados:"#b48cf2",crypto:"#f7931a",energia:"#e0a458",geopolitica:"#4fd1c5",conflictos:"#ff5c5c",impuestos:"#f78fb3",congreso:"#7fb8ff",
-legislatura:"#ffb86b",parlamento:"#7fb8ff",portadas:"#e9e6df"},s=(e,a=2)=>null==e||isNaN(e)?"—":Number(e).toLocaleString("es-AR",{minimumFractionDigits:a,maximumFractionDigits:a
+const e="https://dailynews.fedetrade.workers.dev",a="https://dailynews.fedetrade.workers.dev/",t=6e5,n=12e4,{useState:c,useEffect:l,useMemo:r,useCallback:o}=React,i={politica:"#6cb4ee",
+economia:"#3ecf8e",dolar:"#9ad86b",mercados:"#b48cf2",crypto:"#f7931a",energia:"#e0a458",geopolitica:"#4fd1c5",conflictos:"#ff5c5c",impuestos:"#f78fb3",congreso:"#7fb8ff",legislatura:"#ffb86b",
+parlamento:"#7fb8ff",portadas:"#e9e6df"},s=(e,a=2)=>null==e||isNaN(e)?"—":Number(e).toLocaleString("es-AR",{minimumFractionDigits:a,maximumFractionDigits:a
 }),m=e=>null==e||isNaN(e)?"—":`${e>=0?"▲":"▼"} ${Math.abs(e).toFixed(2)}%`,d=e=>null==e?"":e>=0?"up":"down";function timeAgo(e){if(!e)return"";const a=Math.floor((Date.now()-e)/1e3)
 ;if(a<60)return"recién";const t=Math.floor(a/60);if(t<60)return`hace ${t} min`;const n=Math.floor(t/60);return n<24?`hace ${n} h`:`hace ${Math.floor(n/24)} d`}async function getJSON(a){
 const t=await fetch(e+a,{cache:"no-cache"});if(!t.ok)throw new Error(`${t.status} en ${a}`);return t.json()}function Ticker({m:e}){if(!e)return React.createElement("div",{className:"ticker"
@@ -391,17 +391,17 @@ set:(e,a)=>{try{localStorage.setItem(e,a)}catch(e){}},del:e=>{try{localStorage.r
 },p=e=>btoa(String.fromCharCode(...new Uint8Array(e))),R=e=>Uint8Array.from(atob(e),e=>e.charCodeAt(0)),E=e=>crypto.getRandomValues(new Uint8Array(e));function idDispositivo(){let e=v.get("ad_dev")
 ;return e||(e=[...E(16)].map(e=>e.toString(16).padStart(2,"0")).join(""),v.set("ad_dev",e)),e}function infoDispositivo(){const e=navigator.userAgent||"";let a
 ;return(a=e.match(/iPhone OS (\d+)/))?"iPhone · iOS "+a[1]:(a=e.match(/Android (\d+)[^;]*;\s*([^;)]+)/))?(a[2].trim()||"Android")+" · Android "+a[1]:e.slice(0,60)}async function verificarCodigo(a){
-const t=await fetch(e+"/api/acceso",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({codigo:a,device:idDispositivo(),info:infoDispositivo()})
-}),n=await t.json().catch(()=>({}));return{ok:!!n.ok,abierto:!!n.abierto,motivo:n.motivo||"",nombre:n.nombre||""}}
-const g="Este código está activo en otro dispositivo. Pedile al administrador que lo libere.";async function biometriaDisponible(){try{
+const t=await fetch(e+"/api/acceso",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({codigo:a,device:idDispositivo(),info:infoDispositivo()})})
+;if(!t.ok&&401!==t.status)throw new Error("servidor "+t.status);const n=await t.json().catch(()=>null);if(!n)throw new Error("respuesta inválida");return{ok:!!n.ok,abierto:!!n.abierto,
+motivo:n.motivo||"",nombre:n.nombre||""}}const g="Este código está activo en otro dispositivo. Pedile al administrador que lo libere.";async function biometriaDisponible(){try{
 return!(!window.PublicKeyCredential||!await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())}catch(e){return!1}}async function activarBiometria(){
 const e=await navigator.credentials.create({publicKey:{challenge:E(32),rp:{name:"Argentina Daily"},user:{id:E(16),name:"lector",displayName:"Lector de Argentina Daily"},pubKeyCredParams:[{
 type:"public-key",alg:-7},{type:"public-key",alg:-257}],authenticatorSelection:{authenticatorAttachment:"platform",userVerification:"required",residentKey:"preferred"},timeout:6e4}})
 ;v.set("ad_bio",p(e.rawId))}async function pedirBiometria(){const e=v.get("ad_bio");await navigator.credentials.get({publicKey:{challenge:E(32),allowCredentials:[{type:"public-key",id:R(e)}],
 userVerification:"required",timeout:6e4}})}function Ingreso({children:e}){const[a,t]=c("cargando"),[n,r]=c(""),[o,i]=c(""),[s,m]=c(!1),d=async()=>{try{await pedirBiometria(),t("listo")}catch(e){
-r("No se pudo verificar. Probá de nuevo."),t("bio")}};l(()=>{(async()=>{const e=v.get("ad_codigo");let a=null;try{a=await verificarCodigo(e||"")}catch(e){a=null}if(a&&a.abierto)t("listo");else{
+r("No se pudo verificar. Probá de nuevo."),t("bio")}};l(()=>{(async()=>{const e=v.get("ad_codigo");let a=null;try{a=await verificarCodigo(e||"")}catch(e){a=null}if(a&&a.abierto)t("listo");else if(a){
 if(e)return a&&!a.ok?(v.del("ad_codigo"),v.del("ad_bio"),r("otro_dispositivo"===a.motivo?g:"El código de ingreso cambió. Ingresá el nuevo."),
-void t("codigo")):void(v.get("ad_bio")&&await biometriaDisponible()?(t("bio"),d()):t("listo"));t("codigo")}})()},[]);return l(()=>{if("listo"!==a)return;const e=setInterval(async()=>{
+void t("codigo")):void(v.get("ad_bio")&&await biometriaDisponible()?(t("bio"),d()):t("listo"));t("codigo")}else t("listo")})()},[]);return l(()=>{if("listo"!==a)return;const e=setInterval(async()=>{
 const e=v.get("ad_codigo");if(e)try{const a=await verificarCodigo(e);a.ok||a.abierto||(v.del("ad_codigo"),v.del("ad_bio"),
 r("otro_dispositivo"===a.motivo?g:"El código de ingreso cambió. Ingresá el nuevo."),i(""),t("codigo"))}catch(e){}},9e5);return()=>clearInterval(e)},[a]),"listo"===a?e:React.createElement("div",{
 className:"bloqueo"},React.createElement("div",{className:"bloqueo-box",style:{width:"100%",maxWidth:340}},React.createElement("div",{className:"brand",style:{fontSize:32}
